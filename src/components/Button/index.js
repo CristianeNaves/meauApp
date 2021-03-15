@@ -1,11 +1,13 @@
 import React from 'react';
-import {Button, View} from 'react-native';
+import {Button, View, TouchableOpacity, Text} from 'react-native';
 import styles from './styles';
 
-const LargeButton = ({title, onPress, type}) => {
+const LargeButton = ({title, onPress, style}) => {
   return (
-    <View>
-      <Button title={title} style={styles.largeButton} />
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity style={[styles.button, style]}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
