@@ -1,52 +1,21 @@
-import React, {useState} from 'react';
-import CheckBox from '@react-native-community/checkbox';
-import {View, Text} from 'react-native';
-import {RadioButton} from 'react-native-paper';
+import React from 'react';
+import {Button, View} from 'react-native';
+import styles from './styles';
 
-const CheckBoxField = ({title, options, setOptions}) => {
+const LargeButton = ({title, onPress, type}) => {
   return (
     <View>
-      <Text style={{color: "#f7a800", fontSize: 12}}>{title}</Text>
-      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-        {Object.keys(options).map((key) => {
-          return (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <CheckBox
-                disabled={false}
-                value={options[key]}
-                onValueChange={() =>
-                  setOptions({...options, [key]: !options[key]})
-                }
-              />
-              <Text style={{color: '#757575', fontSize: 14}}>{key}</Text>
-            </View>
-          );
-        })}
-      </View>
+      <Button title={title} style={styles.largeButton} />
     </View>
   );
 };
 
-const RadioButtonField = ({selected, setSelected, options, title}) => {
+const SmallButton = ({title, onPress, type}) => {
   return (
     <View>
-      <Text style={{color: "#f7a800", fontSize: 12}}>{title}</Text>
-      <RadioButton.Group
-        onValueChange={(newValue) => setSelected(newValue)}
-        value={selected}>
-        <View style={{flexDirection: 'row'}}>
-          {options.map((op) => {
-            return (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <RadioButton value={op} />
-                <Text>{op}</Text>
-              </View>
-            );
-          })}
-        </View>
-      </RadioButton.Group>
+      <Button title={title} />
     </View>
   );
 };
 
-export {CheckBoxField, RadioButtonField};
+export {LargeButton};
