@@ -4,10 +4,8 @@ import styles from './styles';
 
 const LargeButton = ({title, onPress, style}) => {
   return (
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
+    <View>
+      <Button title={title} style={styles.largeButton} onPress={onPress} />
     </View>
   );
 };
