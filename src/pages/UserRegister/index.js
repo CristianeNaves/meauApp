@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {
-  CheckBoxField,
-  RadioButtonField,
   TextInputField,
 } from '../../components/Field';
 import {LargeButton} from '../../components/Button';

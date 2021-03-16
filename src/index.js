@@ -8,13 +8,17 @@ import UserRegister from './pages/UserRegister';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Oops from './pages/Oops';
+import Inicial from './pages/Inicial';
 
 function HomeScreen() {
   return (
     <SafeAreaView>
       <Container>
         {/* <PetRegister /> */}
-        <UserRegister />
+        {/* <UserRegister /> */}
+        {/* <Oops /> */}
+        <Inicial />
       </Container>
     </SafeAreaView>
   );
