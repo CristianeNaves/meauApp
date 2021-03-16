@@ -3,6 +3,7 @@ import React from 'react';
 import {View, Text, SafeAreaView} from 'react-native';
 import {Container} from './styles/container';
 import PetRegister from './pages/PetRegister';
+import UserRegister from './pages/UserRegister';
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,11 +11,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 function HomeScreen() {
   return (
-    //<SafeAreaView>
+    <SafeAreaView>
       <Container>
-        <PetRegister />
+        {/* <PetRegister /> */}
+        <UserRegister />
       </Container>
-    //</SafeAreaView>
+    </SafeAreaView>
   );
 }
 const Stack = createStackNavigator();
