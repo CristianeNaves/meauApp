@@ -80,7 +80,7 @@ export default function UserRegister() {
       />
 
 
-      <LargeButton title="Fazer Cadastro" />
+      <LargeButton title="Fazer Cadastro" onPress={() => {}} />
     </View>
   );
 }

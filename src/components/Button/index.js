@@ -5,7 +5,7 @@ import styles from './styles';
 const LargeButton = ({title, onPress, type}) => {
   return (
     <View>
-      <Button title={title} style={styles.largeButton} />
+      <Button title={title} style={styles.largeButton}  onPress={onPress} />
     </View>
   );
 };
