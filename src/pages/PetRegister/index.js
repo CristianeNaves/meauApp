@@ -8,7 +8,7 @@ import {
 } from '../../components/Field';
 import {LargeButton} from '../../components/Button';
 
-export default function PetRegister() {
+export default function PetRegister( {navigation} ) {
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,
     tímido: false,

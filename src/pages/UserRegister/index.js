@@ -7,7 +7,7 @@ import {
 import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
 
-export default function UserRegister() {
+export default function UserRegister( {navigation} ) {
   const [name, setName] = useState();
   const [idade, setIdade] = useState();
   const [email, setEmail] = useState();
