@@ -1,15 +1,13 @@
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
-import {Container} from './styles/container';
-import PetRegister from './pages/PetRegister';
-import Login from './pages/Login';
+import {AuthProvider} from './AuthProvider';
+import Routes from './routes';
 
-export default function App() {
+const App = () => {
   return (
-    <SafeAreaView>
-      <Container>
-        <Login />
-      </Container>
-    </SafeAreaView>
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
   );
-}
+};
+
+export default App;
