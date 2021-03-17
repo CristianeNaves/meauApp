@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Text} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {
@@ -7,8 +7,10 @@ import {
   TextInputField,
 } from '../../components/Field';
 import {LargeButton} from '../../components/Button';
+import AuthContext from '../../contexts/auth';
 
 export default function PetRegister() {
+  const {logOut} = useContext(AuthContext);
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,
     tímido: false,
@@ -103,7 +105,7 @@ export default function PetRegister() {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
-      <LargeButton title="Colocar para adoção" />
+      <LargeButton title="Colocar para adoção" onPress={() => logOut()} />
     </View>
   );
 }

@@ -1,13 +1,33 @@
-import React, {createContext} from 'react';
+import React, {createContext, useState} from 'react';
+import * as auth from '../services/auth';
 
-const AuthContext = createContext({ signed: true });
+const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
-    return(
-        <AuthContext.Provider value={{signed: false}}>
-            {children}
-        </AuthContext.Provider>
-    );
-}
+  const [user, setUser] = useState(null);
+
+  async function logIn(email, password) {
+    const response = await auth.logIn(email, password);
+    setUser(response.user);
+  }
+
+  async function logOut() {
+    auth.logOut().then(() => {
+      setUser(null);
+    });
+  }
+
+  async function register(email, password) {
+    const response = await auth.register(email, password);
+    console.log(response);
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{signed: !!user, user, logIn, logOut, register}}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export default AuthContext;

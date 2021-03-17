@@ -1,13 +1,26 @@
-export function mockLogin(){
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                token: 'asehuh12u7890h5qu78rhn3',
-                user: {
-                    name: 'ASDASD',
-                    email: 'a@a.com',
-                },
-            });
-        }, 2000);
-    });
+import auth from '@react-native-firebase/auth';
+
+export async function logIn(email, password) {
+  try {
+    const response = await auth().signInWithEmailAndPassword(email, password);
+    return response;
+  } catch (error) {
+    console.warn(error);
+  }
+}
+
+export async function logOut() {
+  try {
+    await auth().signOut();
+  } catch (error) {
+    console.warn(error);
+  }
+}
+
+export async function register(email, password) {
+  try {
+    await auth().createUserWithEmailAndPassword(email, password);
+  } catch (error) {
+    console.warn(error);
+  }
 }
