@@ -6,7 +6,7 @@ import {Label} from '../../components/Label';
 import { mockLogin } from '../../services/auth';
 import AuthContext from '../../contexts/auth';
 
-export default function Inicial() {
+export default function Inicial( {navigation} ) {
     const { signed } = useContext(AuthContext);
 
     async function handleSignIn() {
@@ -20,9 +20,9 @@ export default function Inicial() {
             <Label label="Bem-vindo ao Meau!"></Label>
             <Label label="Aqui você pode adotar e doar cães e gatos com facilidade."></Label>
             <Label label="Qual o seu interesse?"></Label>
-            <LargeButton title="Adotar" />
-            <LargeButton title="Cadastrar Animal" />
-            <LargeButton title="Fazer Login" onPress={handleSignIn} />
+            <LargeButton title="Adotar" onPress={() => navigation.navigate('Oops')} />
+            <LargeButton title="Cadastrar Animal" onPress={() => navigation.navigate('Oops')} />
+            <LargeButton title="Fazer Login" onPress={() => navigation.navigate('Login')} />
         </View>
     );
 }

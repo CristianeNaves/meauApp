@@ -9,7 +9,7 @@ import {
 import {LargeButton} from '../../components/Button';
 import AuthContext from '../../contexts/auth';
 
-export default function PetRegister() {
+export default function PetRegister({navigation}) {
   const {logOut} = useContext(AuthContext);
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,

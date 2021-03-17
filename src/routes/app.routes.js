@@ -6,11 +6,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native';
 import { Container } from '../styles/container';
 
-function AppScreen() {
+function PetRegisterScreen({ navigation }) {
     return (
       <SafeAreaView>
         <Container>
-          <PetRegister />
+          <PetRegister navigation={navigation} />
         </Container>
       </SafeAreaView>
     );
@@ -21,7 +21,7 @@ const AppStack = createStackNavigator();
 export default function AppRoutes(){
     return(
         <AppStack.Navigator>
-            <AppStack.Screen name="Titulo App" component={AppScreen} />
+            <AppStack.Screen name="CadastroPet" component={PetRegisterScreen} />
         </AppStack.Navigator>
     );
 }

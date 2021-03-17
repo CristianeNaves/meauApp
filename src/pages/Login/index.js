@@ -5,7 +5,7 @@ import styles from '../../components/Button/styles';
 import {TextInputField} from '../../components/Field';
 import AuthContext from '../../contexts/auth';
 
-export default function Login() {
+export default function Login({navigation}) {
   const [user, setUser] = useState({});
   const {logIn} = useContext(AuthContext);
 
