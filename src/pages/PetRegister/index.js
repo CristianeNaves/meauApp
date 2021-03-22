@@ -109,7 +109,8 @@ export default function PetRegister({navigation}) {
       <LargeButton
         title="Colocar para adoção"
         onPress={() =>
-          create(user.uid, {
+          create({
+            userId: user.uid,
             petName,
             doencas,
             sobre,

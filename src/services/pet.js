@@ -1,15 +1,35 @@
 import firestore from '@react-native-firebase/firestore';
 
-const getAll = () => {
-  //buscar todos os pets de um id
+const get = async (petId) => {
+  try {
+    const pet = await firestore().collection('Pets').doc(petId).get();
+    return pet; //verificar como está retornando
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const create = async (userId, newPet) => {
+const getAll = async (userId) => {
+  let pets = null;
+  try {
+    if (userId) {
+      pets = await firestore()
+        .collection('Pets')
+        .where('userId', '==', userId)
+        .get();
+    } else {
+      pets = await firestore().collection('Pets').get();
+    }
+    return pets;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const create = async (newPet) => {
   //criar um pet para um user id
   try {
-    const response = await firestore()
-      .collection('Pets')
-      .add({...newPet, userId});
+    const response = await firestore().collection('Pets').add(newPet);
     console.log('Pet cadastrado');
     return response;
   } catch (error) {
@@ -17,12 +37,25 @@ const create = async (userId, newPet) => {
   }
 };
 
-const update = (pet_id, newPet) => {
-  //fazer o update de um pet dado o id dele
+const update = async (petId, newPet) => {
+  try {
+    const response = await firestore()
+      .collection('Pets')
+      .doc(petId)
+      .update(newPet);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const remove = () => {
-  //remover o pet
+const remove = async (petId) => {
+  try {
+    const response = await firestore().collection('Pets').doc(petId).delete();
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export {getAll, create, update, remove};
