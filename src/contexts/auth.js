@@ -7,8 +7,8 @@ export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
 
   async function logIn(email, password) {
-    const response = await auth.logIn(email, password);
-    setUser(response.user);
+    const user = await auth.logIn(email, password);
+    setUser(user); //buscar o user do firestore
   }
 
   async function logOut() {
@@ -17,9 +17,9 @@ export const AuthProvider = ({children}) => {
     });
   }
 
-  async function register(email, password) {
-    const response = await auth.register(email, password);
-    console.log(response);
+  async function register(email, password, other_info) {
+    const user = await auth.register(email, password, other_info);
+    setUser(user);
   }
 
   return (

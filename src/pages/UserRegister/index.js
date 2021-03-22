@@ -1,41 +1,36 @@
-import React, {useState} from 'react';
-import {View, Text} from 'react-native';
-import {LeftedContainer} from '../../styles/container';
-import {
-  TextInputField,
-} from '../../components/Field';
+import React, {useState, useContext} from 'react';
+import {View} from 'react-native';
+import AuthContext from '../../contexts/auth';
+import {TextInputField} from '../../components/Field';
 import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
 
-export default function UserRegister( {navigation} ) {
+export default function UserRegister({navigation}) {
+  const {register} = useContext(AuthContext);
   const [name, setName] = useState();
-  const [idade, setIdade] = useState();
+  const [age, setAge] = useState();
   const [email, setEmail] = useState();
-  const [estado, setEstado] = useState();
-  const [cidade, setCidade] = useState();
-  const [endereco, setEndereco] = useState();
-  const [telefone, setTelefone] = useState();
+  const [state, setState] = useState();
+  const [city, setCity] = useState();
+  const [address, setAddress] = useState();
+  const [telephone, setTelephone] = useState();
 
-  const [usuario, setUsuario] = useState();
-  const [senha, setSenha] = useState();
+  const [loginName, setLoginName] = useState();
+  const [password, setPassword] = useState();
   const [senhaconf, setSenhaConf] = useState();
 
-  
   return (
     <View>
-      <Label label="Informações pessoais"></Label>
+      <Label label="Informações pessoais" />
 
       <TextInputField
         placeholder="Nome completo"
         // label="Informações pessoais"
         onChange={(value) => setName(value)}
       />
-      
-      <TextInputField
-        placeholder="Idade"
-        onChange={(value) => setIdade(value)}
-      />
-      
+
+      <TextInputField placeholder="Idade" onChange={(value) => setAge(value)} />
+
       <TextInputField
         placeholder="Email"
         onChange={(value) => setEmail(value)}
@@ -43,35 +38,35 @@ export default function UserRegister( {navigation} ) {
 
       <TextInputField
         placeholder="Estado"
-        onChange={(value) => setEstado(value)}
+        onChange={(value) => setState(value)}
       />
 
       <TextInputField
         placeholder="Cidade"
-        onChange={(value) => setCidade(value)}
+        onChange={(value) => setCity(value)}
       />
 
       <TextInputField
         placeholder="Endereço"
-        onChange={(value) => setEndereco(value)}
+        onChange={(value) => setAddress(value)}
       />
 
       <TextInputField
         placeholder="Telefone"
-        onChange={(value) => setTelefone(value)}
+        onChange={(value) => setTelephone(value)}
       />
 
-      <Label label="Informações de Perfil"></Label>
+      <Label label="Informações de Perfil" />
 
       <TextInputField
         placeholder="Nome de Usuário"
         // label="Informações de Perfil"
-        onChange={(value) => setUsuario(value)}
+        onChange={(value) => setLoginName(value)}
       />
 
       <TextInputField
         placeholder="Senha"
-        onChange={(value) => setSenha(value)}
+        onChange={(value) => setPassword(value)}
       />
 
       <TextInputField
@@ -79,8 +74,20 @@ export default function UserRegister( {navigation} ) {
         onChange={(value) => setSenhaConf(value)}
       />
 
-
-      <LargeButton title="Fazer Cadastro" onPress={() => {}} />
+      <LargeButton
+        title="Fazer Cadastro"
+        onPress={() =>
+          register(email, password, {
+            name,
+            age,
+            loginName,
+            city,
+            telephone,
+            address,
+            state,
+          })
+        }
+      />
     </View>
   );
 }
