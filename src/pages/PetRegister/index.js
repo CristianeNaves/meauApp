@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {
   CheckBoxField,
@@ -8,9 +8,10 @@ import {
 } from '../../components/Field';
 import {LargeButton} from '../../components/Button';
 import AuthContext from '../../contexts/auth';
+import {create} from '../../services/pet';
 
 export default function PetRegister({navigation}) {
-  const {logOut} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,
     tímido: false,
@@ -38,7 +39,7 @@ export default function PetRegister({navigation}) {
   });
 
   const [petName, setPetName] = useState();
-  const [deoncas, setDoencas] = useState();
+  const [doencas, setDoencas] = useState();
   const [sobre, setSobre] = useState();
 
   const [especie, setEspecie] = useState('Gato');
@@ -105,7 +106,24 @@ export default function PetRegister({navigation}) {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
-      <LargeButton title="Colocar para adoção" onPress={() => logOut()} />
+      <LargeButton
+        title="Colocar para adoção"
+        onPress={() =>
+          create(user.uid, {
+            petName,
+            doencas,
+            sobre,
+            especie,
+            sexo,
+            idade,
+            porte,
+            saude,
+            exigencias,
+            mes,
+            temperamentos,
+          })
+        }
+      />
     </View>
   );
 }
