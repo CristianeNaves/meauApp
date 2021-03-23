@@ -11,6 +11,7 @@ import { Container } from '../styles/container';
 import { SafeAreaView } from 'react-native';
 
 function InicialScreen({ navigation }) {
+  console.log("InicialScreen");
     return (
       <SafeAreaView>
         <Container>
@@ -21,6 +22,7 @@ function InicialScreen({ navigation }) {
 }
 
 function OopsScreen({ navigation }) {
+  console.log("OopsScreen");
     return (
       <SafeAreaView>
         <Container>
@@ -31,6 +33,7 @@ function OopsScreen({ navigation }) {
 }
 
 function LoginScreen({ navigation }) {
+  console.log("LoginScreen");
     return (
       <SafeAreaView>
         <Container>
@@ -41,6 +44,7 @@ function LoginScreen({ navigation }) {
 }
 
 function UsrRegisterScreen({ navigation }) {
+  console.log("UsrRegScreen");
     return (
       <SafeAreaView>
         <Container>
