@@ -26,14 +26,18 @@ const getAll = async (userId) => {
   }
 };
 
-const create = async (newPet) => {
+const create = async (newPet, userId) => {
   //criar um pet para um user id
   try {
-    const response = await firestore().collection('Pets').add(newPet);
+    const response = await firestore()
+      .collection('Pets')
+      .add({...newPet, userId});
     console.log('Pet cadastrado');
     return response;
   } catch (error) {
+    //return error or status
     console.log(error);
+    return false;
   }
 };
 

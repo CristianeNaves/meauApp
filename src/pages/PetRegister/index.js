@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {
   CheckBoxField,
@@ -10,8 +10,26 @@ import {LargeButton} from '../../components/Button';
 import AuthContext from '../../contexts/auth';
 import {create} from '../../services/pet';
 
-export default function PetRegister({navigation}) {
-  const {user} = useContext(AuthContext);
+const PetCreated = ({navigation}) => {
+  return (
+    <View>
+      <Text>Eba!</Text>
+      <Text>O cadastro do seu pet foi realizado com sucesso!</Text>
+      <Text>
+        Certifique-se que permitiu o envio de notificações por push no campo
+        privacidade do menu configurações do aplicativo. Assim, poderemos te
+        assim que alguém interessado entrar em contato!
+      </Text>
+      <LargeButton
+        title="Meus Pets"
+        onPress={() => navigation.navigate('Meus Pets')}
+      />
+    </View>
+  );
+};
+
+const PetForm = ({user, setCreated}) => {
+  /** buscar as informaçoes caso esteja fazendo update. Fazer um models para organizar */
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,
     tímido: false,
@@ -46,6 +64,29 @@ export default function PetRegister({navigation}) {
   const [sexo, setSexo] = useState('Macho');
   const [porte, setPorte] = useState('Pequeno');
   const [idade, setIdade] = useState('Filhote');
+
+  function createPet() {
+    const response = create(
+      {
+        petName,
+        doencas,
+        sobre,
+        especie,
+        sexo,
+        idade,
+        porte,
+        saude,
+        exigencias,
+        mes,
+        temperamentos,
+      },
+      user.uid,
+    );
+    if (response) {
+      setCreated(true);
+    }
+  }
+
   return (
     <View>
       <TextInputField
@@ -106,25 +147,18 @@ export default function PetRegister({navigation}) {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
-      <LargeButton
-        title="Colocar para adoção"
-        onPress={() =>
-          create({
-            userId: user.uid,
-            petName,
-            doencas,
-            sobre,
-            especie,
-            sexo,
-            idade,
-            porte,
-            saude,
-            exigencias,
-            mes,
-            temperamentos,
-          })
-        }
-      />
+      <LargeButton title="Colocar para adoção" onPress={() => createPet()} />
     </View>
+  );
+};
+
+export default function PetRegister({navigation}) {
+  const {user} = useContext(AuthContext);
+  const [created, setCreated] = useState(false);
+
+  return created ? (
+    <PetCreated navigation={navigation} />
+  ) : (
+    <PetForm user={user} setCreated={setCreated} />
   );
 }
