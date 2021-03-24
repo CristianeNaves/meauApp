@@ -5,6 +5,8 @@ import {TextInputField} from '../../components/Field';
 import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
 
+import * from '../../services/user';
+
 export default function Perfil({navigation}) {
   const {register} = useContext(AuthContext);
 
