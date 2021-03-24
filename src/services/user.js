@@ -58,4 +58,4 @@ const remove = async (userId) => {
   }
 };
 
-export {getAll, create, update, remove};
+export {get, getAll, create, update, remove};

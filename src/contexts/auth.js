@@ -9,6 +9,7 @@ export const AuthProvider = ({children}) => {
   async function logIn(email, password) {
     const user = await auth.logIn(email, password);
     setUser(user); //buscar o user do firestore
+    console.log(user);
   }
 
   async function logOut() {

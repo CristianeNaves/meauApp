@@ -7,6 +7,7 @@ import {Label} from '../../components/Label';
 
 export default function EditarPerfil({navigation}) {
   const {register} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
 
   const [name, setName] = useState();
   const [age, setAge] = useState();
@@ -22,41 +23,40 @@ export default function EditarPerfil({navigation}) {
       <Label label="Informações pessoais" />
 
       <TextInputField
-        placeholder="Nome completo"
+        placeholder={user.name}
         // label="Informações pessoais"
         onChange={(value) => setName(value)}
       />
 
       <TextInputField 
-        placeholder="Idade" 
+        placeholder={user.age}
         onChange={(value) => setAge(value)} 
       />
 
       <TextInputField
-        placeholder="Estado"
+        placeholder={user.state}
         onChange={(value) => setState(value)}
       />
 
       <TextInputField
-        placeholder="Cidade"
+        placeholder={user.city}
         onChange={(value) => setCity(value)}
       />
 
       <TextInputField
-        placeholder="Endereço"
+        placeholder={user.address}
         onChange={(value) => setAddress(value)}
       />
 
       <TextInputField
-        placeholder="Telefone"
+        placeholder={user.telephone}
         onChange={(value) => setTelephone(value)}
       />
 
       <Label label="Informações de Perfil" />
 
       <TextInputField
-        placeholder="Nome de Usuário"
-        // label="Informações de Perfil"
+        placeholder={user.loginName}
         onChange={(value) => setLoginName(value)}
       />
 
