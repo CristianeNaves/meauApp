@@ -5,11 +5,11 @@ import {RadioButton} from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import styles from './style';
 
-const TextInputField = ({placeholder, label, onChange}) => {
+const TextInputField = ({placeholder, label, onChange, value}) => {
   return (
     <View>
       {label ? <Text style={styles.fieldTitle}>{label}</Text> : <></>}
-      <Input placeholder={placeholder} onChangeText={onChange} />
+      <Input placeholder={placeholder} value={value} onChangeText={onChange} />
     </View>
   );
 };
