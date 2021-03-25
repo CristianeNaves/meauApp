@@ -22,7 +22,7 @@ const PetCreated = ({navigation}) => {
       </Text>
       <LargeButton
         title="Meus Pets"
-        onPress={() => navigation.navigate('Meus Pets')}
+        onPress={() => navigation.navigate('MeusPets')}
       />
     </View>
   );
