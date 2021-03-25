@@ -5,64 +5,73 @@ import {TextInputField} from '../../components/Field';
 import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
 
+import { update } from '../../services/user';
+
 export default function EditarPerfil({navigation}) {
   const {register} = useContext(AuthContext);
   const {user} = useContext(AuthContext);
 
-  const [name, setName] = useState();
-  const [age, setAge] = useState();
-  const [state, setState] = useState();
-  const [city, setCity] = useState();
-  const [address, setAddress] = useState();
-  const [telephone, setTelephone] = useState();
+  const [name, setName] = useState(user.name);
+  const [age, setAge] = useState(user.age);
+  const [state, setState] = useState(user.state);
+  const [city, setCity] = useState(user.city);
+  const [address, setAddress] = useState(user.address);
+  const [telephone, setTelephone] = useState(user.telephone);
 
-  const [loginName, setLoginName] = useState();
+  const [loginName, setLoginName] = useState(user.loginName);
 
   return (
     <View>
       <Label label="Informações pessoais" />
 
       <TextInputField
-        placeholder={user.name}
+        placeholder="Nome completo"
+        value={name}
         // label="Informações pessoais"
         onChange={(value) => setName(value)}
       />
 
       <TextInputField 
-        placeholder={user.age}
+        placeholder="Idade"
+        value={age}
         onChange={(value) => setAge(value)} 
       />
 
       <TextInputField
-        placeholder={user.state}
+        placeholder="Estado"
+        value={state}
         onChange={(value) => setState(value)}
       />
 
       <TextInputField
-        placeholder={user.city}
+        placeholder="Cidade"
+        value={city}
         onChange={(value) => setCity(value)}
       />
 
       <TextInputField
-        placeholder={user.address}
+        placeholder="Endereço"
+        value={address}
         onChange={(value) => setAddress(value)}
       />
 
       <TextInputField
-        placeholder={user.telephone}
+        placeholder="Telefone"
+        value={telephone}
         onChange={(value) => setTelephone(value)}
       />
 
       <Label label="Informações de Perfil" />
 
       <TextInputField
-        placeholder={user.loginName}
+        placeholder="Nome de Usuário"
+        value={loginName}
         onChange={(value) => setLoginName(value)}
       />
 
       <LargeButton
         title="Confirmar"
-        onPress={() => navigation.navigate('Perfil')}
+        onPress={() => update(user.uid, user)}
       />
       
     </View>
