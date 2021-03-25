@@ -28,7 +28,7 @@ function PetListScreen({navigation}) {
 
 const AppStack = createStackNavigator();
 
-export default function AppRoutes(){
+export default function AppRoutes() {
   return (
     <AppStack.Navigator>
       <AppStack.Screen name="Cadastro do Animal" component={PetRegisterScreen} />

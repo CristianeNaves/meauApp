@@ -9,22 +9,22 @@ const get = async (petId) => {
   }
 };
 
-const getAll = async (userId) => {
-  let pets = null;
-  try {
-    if (userId) {
-      pets = await firestore()
-        .collection('Pets')
-        .where('userId', '==', userId)
-        .get();
-    } else {
-      pets = await firestore().collection('Pets').get();
-    }
-    return pets;
-  } catch (error) {
-    console.log(error);
-  }
+const getAll = (userId) => {
+  return firestore().collection('Pets').get();
 };
+
+/*
+function getAll(userId) {
+    return db.collection('Pets').get().then(docs => {
+        
+    })
+      
+      (doc) => {
+        if (doc.exists) return doc.data().text;
+        return Promise.reject("No such document");
+    });
+}
+*/
 
 const create = async (newPet, userId) => {
   //criar um pet para um user id
