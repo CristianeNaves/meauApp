@@ -10,6 +10,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaView} from 'react-native';
 import {Container} from '../styles/container';
 import PetList from '../pages/PetList.js';
+import Pet from '../pages/Pet';
 
 function MenuScreen({navigation}) {
   console.log('MenuScreen');
@@ -77,6 +78,16 @@ function AdotarScreen({navigation}) {
   );
 }
 
+function PetScreen({route, navigation}) {
+  return (
+    <SafeAreaView>
+      <Container>
+        <Pet navigation={navigation} route={route}/>
+      </Container>
+    </SafeAreaView>
+  );
+}
+
 const AppStack = createStackNavigator();
 
 export default function AppRoutes() {
@@ -85,7 +96,8 @@ export default function AppRoutes() {
       <AppStack.Screen name="Menu" component={MenuScreen} />
       <AppStack.Screen name="Perfil" component={MeuPerfilScreen} />
       <AppStack.Screen name="EditarPerfil" component={EditarPerfilScreen} />
-      <AppStack.Screen name="MeusPets" component={MeusPetsScreen } />
+      <AppStack.Screen name="MeusPets" component={MeusPetsScreen} />
+      <AppStack.Screen name="Pet" component={PetScreen} />
       <AppStack.Screen name="CadastroPet" component={PetRegisterScreen} />
       <AppStack.Screen name="Adotar" component={AdotarScreen} />
     </AppStack.Navigator>

@@ -9,16 +9,19 @@ const get = async (petId) => {
   }
 };
 
-const getAll = (userId) => {
-  return firestore().collection('Pets').get();
+const getAll = async (userId) => {
+  const pets = await firestore()
+    .collection('Pets')
+    .where('userId', '==', userId)
+    .get();
+  return pets;
 };
 
 /*
 function getAll(userId) {
     return db.collection('Pets').get().then(docs => {
-        
+
     })
-      
       (doc) => {
         if (doc.exists) return doc.data().text;
         return Promise.reject("No such document");
