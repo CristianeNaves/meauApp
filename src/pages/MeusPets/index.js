@@ -21,7 +21,7 @@ const PetItem = ({navigation, pet}) => {
   );
 };
 
-export default function PetList({navigation}) {
+export default function MeusPets({navigation}) {
   const {user} = useContext(AuthContext);
   const [pets, setPets] = useState([]);
 

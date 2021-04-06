@@ -13,6 +13,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
+  line: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
 });
 
 export default styles;
