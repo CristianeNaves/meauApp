@@ -17,17 +17,13 @@ const getAll = async (userId) => {
   return pets;
 };
 
-/*
-function getAll(userId) {
-    return db.collection('Pets').get().then(docs => {
-
-    })
-      (doc) => {
-        if (doc.exists) return doc.data().text;
-        return Promise.reject("No such document");
-    });
-}
-*/
+const getPetsForAdoption = async (userId) => {
+  const pets = await firestore()
+    .collection('Pets')
+    .where('userId', '!=', userId)
+    .get();
+  return pets;
+};
 
 const create = async (newPet, userId) => {
   //criar um pet para um user id
@@ -65,4 +61,4 @@ const remove = async (petId) => {
   }
 };
 
-export {getAll, create, update, remove};
+export {getAll, create, update, remove, getPetsForAdoption};
