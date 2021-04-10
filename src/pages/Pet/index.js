@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 import styles from './style';
 import {Button} from 'react-native-paper';
 import AuthContext from '../../contexts/auth';
-import {remove} from '../../services/pet';
+import {remove, sentAdoptionIntention} from '../../services/pet';
 
 export default function Pet({route, navigation}) {
   const [pet, setPet] = useState(route.params ? route.params : {});
@@ -144,7 +144,9 @@ export default function Pet({route, navigation}) {
             fontFamily: 'Roboto Medium',
           }}
           color="#fdcf58"
-          onPress={() => {}}>
+          onPress={() => {
+            sentAdoptionIntention(pet.id, user.uid);
+          }}>
           Pretendo Adotar
         </Button>
       )}

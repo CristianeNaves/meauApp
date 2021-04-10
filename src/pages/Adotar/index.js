@@ -60,7 +60,7 @@ export default function MeusPets({navigation}) {
     <View>
       {pets.map((pet) => (
         <View key={pet.id}>
-          <PetCard navigation={navigation} pet={pet.data()} />
+          <PetCard navigation={navigation} pet={{...pet.data(), id: pet.id}} />
         </View>
       ))}
     </View>
