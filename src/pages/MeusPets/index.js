@@ -8,7 +8,7 @@ import styles from './style';
 const PetCard = ({navigation, pet}) => {
   return (
     <Card
-      style={{marginTop: 12}}
+      style={{marginBottom: 12}}
       onPress={() => navigation.navigate('Pet', pet)}>
       <Card.Title
         title={pet.petName}
