@@ -25,6 +25,11 @@ const getPetsForAdoption = async (userId) => {
   return pets;
 };
 
+const getPetLocalization = async (userId) => {
+  const user = await firestore().collection('users').doc(userId).get();
+  return user.data();
+};
+
 const create = async (newPet, userId) => {
   //criar um pet para um user id
   try {
@@ -61,4 +66,4 @@ const remove = async (petId) => {
   }
 };
 
-export {getAll, create, update, remove, getPetsForAdoption};
+export {getAll, create, update, remove, getPetsForAdoption, getPetLocalization};

@@ -1,48 +1,67 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import AuthContext from '../../contexts/auth';
-import {getPetsForAdoption} from '../../services/pet';
-import {ListItem} from 'react-native-elements';
+import {getPetsForAdoption, getPetLocalization} from '../../services/pet';
+import {Button, Card} from 'react-native-paper';
+import styles from './style';
 
-const PetItem = ({navigation, pet}) => {
+const PetCard = ({navigation, pet}) => {
+  const [localization, setLocalization] = useState('');
+
+  const loadLocalization = async () => {
+    const request = await getPetLocalization(pet.userId);
+    setLocalization(request);
+  };
+
+  useEffect(() => {
+    loadLocalization();
+  }, []);
   return (
-    <View>
-      <ListItem
-        key={pet.uid}
-        bottomDivider
-        onPress={() => {
-          navigation.navigate('Pet', pet);
-        }}>
-        <ListItem.Content>
-          <ListItem.Title>{pet.petName}</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-    </View>
+    <Card
+      style={{marginTop: 12}}
+      onPress={() => navigation.navigate('Pet', pet)}>
+      <Card.Title
+        title={pet.petName}
+        style={{backgroundColor: '#fee29b'}}
+        titleStyle={styles.titleInfo}
+      />
+      <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+      <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+        <Text style={styles.bottomInfo}>{pet.sexo}</Text>
+        <Text style={styles.bottomInfo}>{pet.idade}</Text>
+        <Text style={styles.bottomInfo}>{pet.porte}</Text>
+      </View>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.bottomInfo}>
+          {localization
+            ? `${localization.city} - ${localization.state}`
+            : 'localização não informada'}
+        </Text>
+      </View>
+    </Card>
   );
 };
 
-export default function Adotar({navigation}) {
+export default function MeusPets({navigation}) {
   const {user} = useContext(AuthContext);
   const [pets, setPets] = useState([]);
 
+  const loadData = async () => {
+    const request = await getPetsForAdoption(user.uid);
+    const data = await request.docs;
+    setPets(data);
+  };
+
   useEffect(() => {
-    let isCancelled = false;
-    getPetsForAdoption(user.uid).then((animals) => {
-      animals.forEach((animal) => {
-        if (!isCancelled) {
-          setPets((oldPets) => [...oldPets, {...animal.data(), id: animal.id}]);
-        }
-      });
-    });
-    return () => {
-      isCancelled = true;
-    };
+    loadData();
   }, []);
 
   return (
     <View>
       {pets.map((pet) => (
-        <PetItem navigation={navigation} pet={pet} />
+        <View key={pet.id}>
+          <PetCard navigation={navigation} pet={pet.data()} />
+        </View>
       ))}
     </View>
   );
