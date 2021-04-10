@@ -1,23 +1,24 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {getAll} from '../../services/pet';
-import {ListItem} from 'react-native-elements';
+import {Button, Card} from 'react-native-paper';
+import styles from './style';
 
-const PetItem = ({navigation, pet}) => {
+const PetCard = ({navigation, pet}) => {
   return (
-    <View>
-      <ListItem
-        key={pet.uid}
-        bottomDivider
-        onPress={() => {
-          navigation.navigate('Pet', pet);
-        }}>
-        <ListItem.Content>
-          <ListItem.Title>{pet.petName}</ListItem.Title>
-        </ListItem.Content>
-      </ListItem>
-    </View>
+    <Card
+      style={{marginTop: 12}}
+      onPress={() => navigation.navigate('Pet', pet)}>
+      <Card.Title
+        title={pet.petName}
+        style={{backgroundColor: '#cfe9e5'}}
+        titleStyle={styles.titleInfo}
+      />
+      <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+      <Button labelStyle={styles.bottomInfo}>Interessados</Button>
+      <Button labelStyle={styles.bottomInfo}>Apadrinhamento | Ajuda</Button>
+    </Card>
   );
 };
 
@@ -25,25 +26,22 @@ export default function MeusPets({navigation}) {
   const {user} = useContext(AuthContext);
   const [pets, setPets] = useState([]);
 
+  const loadData = async () => {
+    const request = await getAll(user.uid);
+    const data = await request.docs;
+    setPets(data);
+  };
+
   useEffect(() => {
-    let isCancelled = false;
-    getAll(user.uid).then((animals) => {
-      animals.forEach((animal) => {
-        if (!isCancelled) {
-          setPets((oldPets) => [...oldPets, {...animal.data(), id: animal.id}]);
-        }
-      });
-    });
-    return () => {
-      isCancelled = true;
-    };
+    loadData();
   }, []);
 
   return (
     <View>
-      <Text>Meus Pets Page</Text>
       {pets.map((pet) => (
-        <PetItem navigation={navigation} pet={pet} />
+        <View key={pet.id}>
+          <PetCard navigation={navigation} pet={pet.data()} />
+        </View>
       ))}
     </View>
   );
