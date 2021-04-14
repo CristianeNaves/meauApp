@@ -10,6 +10,9 @@ import {LargeButton} from '../../components/Button';
 import AuthContext from '../../contexts/auth';
 import {create} from '../../services/pet';
 
+import ImageSelection from '../../components/ImageSelection';
+import storage from '@react-native-firebase/storage';
+
 const PetCreated = ({navigation}) => {
   return (
     <View>
@@ -65,7 +68,42 @@ const PetForm = ({user, setCreated}) => {
   const [porte, setPorte] = useState('Pequeno');
   const [idade, setIdade] = useState('Filhote');
 
+  const [petPhoto, setPetPhoto] = useState();
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
+
+  const uploadImage = async () => {
+    console.log(petPhoto);
+    const { uri } = petPhoto;
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    setUploading(true);
+    setTransferred(0);
+    const task = storage()
+      .ref(filename)
+      .putFile(uploadUri);
+    // set progress state
+    task.on('state_changed', snapshot => {
+      setTransferred(
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+      );
+    });
+    try {
+      await task;
+    } catch (e) {
+      console.error(e);
+    }
+    setUploading(false);
+    // Alert.alert(
+    //   'Photo uploaded!',
+    //   'Your photo has been uploaded to Firebase Cloud Storage!'
+    // );
+    // setImage(null);
+  };
+
   function createPet() {
+    const photoFile = petPhoto.uri.split('/').pop();
+    uploadImage();
     const response = create(
       {
         petName,
@@ -79,6 +117,7 @@ const PetForm = ({user, setCreated}) => {
         exigencias,
         mes,
         temperamentos,
+        photoFile,
       },
       user.uid,
     );
@@ -147,6 +186,9 @@ const PetForm = ({user, setCreated}) => {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
+
+      <ImageSelection image={petPhoto} onImagePicked={setPetPhoto}/>
+
       <LargeButton title="Colocar para adoção" onPress={() => createPet()} />
     </View>
   );

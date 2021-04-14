@@ -7,10 +7,14 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: '#bbded6'
     },
-    imageBox: {
+    largeImage: {
       width: 300,
       height: 300
-    }
+    },
+    smallImage: {
+      width: 70,
+      height: 70,
+    },
   });
 
   export default styles;

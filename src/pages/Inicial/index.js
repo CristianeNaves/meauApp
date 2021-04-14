@@ -1,10 +1,11 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, ViewPropTypes} from 'react-native';
+import {View, Text, ViewPropTypes, Image} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
 import { mockLogin } from '../../services/auth';
 import AuthContext from '../../contexts/auth';
+import styles from './style';
 
 export default function Inicial( {navigation} ) {
     const { signed } = useContext(AuthContext);

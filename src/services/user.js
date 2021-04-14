@@ -58,4 +58,13 @@ const remove = async (userId) => {
   }
 };
 
-export {get, getAll, create, update, remove};
+const getInteressados = async (pet) => {
+  const interessados = await firestore()
+    .collection('users')
+    // .where('name', '==', "testonildo2")
+    .where(firestore.FieldPath.documentId(), 'in', pet.intentios)
+    .get();
+  return interessados;
+};
+
+export {get, getAll, create, update, remove, getInteressados};

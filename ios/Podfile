@@ -14,6 +14,10 @@ target 'meauApp' do
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'RNFBStorage', :path => '../node_modules/@react-native-firebase/storage'
+
   target 'meauAppTests' do
     inherit! :complete
     # Pods for testing
