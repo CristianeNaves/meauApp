@@ -6,8 +6,9 @@ import {ListItem} from 'react-native-elements';
 import { LargeImage } from '../../components/Image';
 
 import storage from '@react-native-firebase/storage';
+import { update } from '../../services/pet';
 
-const InteressadoItem = ({navigation, interessado}) => {
+const InteressadoItem = ({navigation, interessado, pet}) => {
 
   const [interessadoPhoto, setInteressadoPhoto] = useState({uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU"});
 
@@ -27,10 +28,15 @@ const InteressadoItem = ({navigation, interessado}) => {
   return (
     <View>
       <ListItem
-        key={interessado.uid}
+        key={interessado.id}
         bottomDivider
         onPress={() => {
-          navigation.navigate('Perfil', interessado);
+          // navigation.navigate('Perfil', interessado);
+          pet.intentios = null;
+          pet.userId = interessado.id;
+          update(pet.id, pet).then((response) => {
+            navigation.navigate('Adotar pet', {name: pet.petName});
+          });
         }}>
         <LargeImage source={interessadoPhoto.uri} />
         <ListItem.Content>
@@ -68,7 +74,7 @@ export default function Interessados({navigation, route}) {
   return (
     <View>
       {interessados.map((interessado) => (
-        <InteressadoItem navigation={navigation} interessado={interessado} />
+        <InteressadoItem navigation={navigation} interessado={interessado} pet={route.params} />
       ))}
     </View>
   );

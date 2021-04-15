@@ -14,6 +14,7 @@ import Adotar from '../pages/Adotar';
 import Pet from '../pages/Pet';
 import RemoverPet from '../pages/RemoverPet';
 import Interessados from '../pages/Interessados';
+import PetAdotado from '../pages/PetAdotado';
 
 function MenuScreen({navigation}) {
   console.log('MenuScreen');
@@ -92,6 +93,17 @@ function RemoverPetScreen({route, navigation}) {
   );
 }
 
+function AdotarPetScreen({route, navigation}) {
+  console.log('AdotarPetScreen');
+  return (
+    <SafeAreaView>
+      <Container>
+        <PetAdotado route={route} navigation={navigation} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
 function PetScreen({route, navigation}) {
   return (
     <SafeAreaView>
@@ -126,6 +138,7 @@ export default function AppRoutes() {
       <AppStack.Screen name="CadastroPet" component={PetRegisterScreen} />
       <AppStack.Screen name="Adotar" component={AdotarScreen} />
       <AppStack.Screen name="Remover pet" component={RemoverPetScreen} />
+      <AppStack.Screen name="Adotar pet" component={AdotarPetScreen} />
     </AppStack.Navigator>
   );
 }

@@ -131,10 +131,12 @@ export default function Pet({route, navigation}) {
 
       {user.uid === pet.userId ? (
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          
           <LargeButton title="Ver interessados" onPress={() => {
             if(pet.intentios != null) navigation.navigate('Interessados', pet);
             else Alert.alert("Não há interessados na adoção ainda.");
           }} />
+
           <LargeButton
             title="Remover pet"
             onPress={() => {
