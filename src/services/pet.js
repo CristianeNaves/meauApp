@@ -9,22 +9,38 @@ const get = async (petId) => {
   }
 };
 
-const getAll = (userId) => {
-  return firestore().collection('Pets').get();
+const getAll = async (userId) => {
+  const pets = await firestore()
+    .collection('Pets')
+    .where('userId', '==', userId)
+    .get();
+  return pets;
 };
 
-/*
-function getAll(userId) {
-    return db.collection('Pets').get().then(docs => {
-        
+const getPetsForAdoption = async (userId) => {
+  const pets = await firestore()
+    .collection('Pets')
+    .where('userId', '!=', userId)
+    .get();
+  return pets;
+};
+
+const getPetLocalization = async (userId) => {
+  const user = await firestore().collection('users').doc(userId).get();
+  return user.data();
+};
+
+const sentAdoptionIntention = (petId, userId) => {
+  const path = `Pets/${petId}`;
+  firestore()
+    .doc(path)
+    .update({
+      intentios: firestore.FieldValue.arrayUnion(userId),
     })
-      
-      (doc) => {
-        if (doc.exists) return doc.data().text;
-        return Promise.reject("No such document");
+    .then(() => {
+      console.log('adicionada intenção de adotar');
     });
-}
-*/
+};
 
 const create = async (newPet, userId) => {
   //criar um pet para um user id
@@ -62,4 +78,12 @@ const remove = async (petId) => {
   }
 };
 
-export {getAll, create, update, remove};
+export {
+  getAll,
+  create,
+  update,
+  remove,
+  getPetsForAdoption,
+  getPetLocalization,
+  sentAdoptionIntention,
+};

@@ -9,7 +9,12 @@ import EditarPerfil from '../pages/EditarPerfil';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaView} from 'react-native';
 import {Container} from '../styles/container';
-import PetList from '../pages/PetList.js';
+import MeusPets from '../pages/MeusPets/index';
+import Adotar from '../pages/Adotar';
+import Pet from '../pages/Pet';
+import RemoverPet from '../pages/RemoverPet';
+import Interessados from '../pages/Interessados';
+import PetAdotado from '../pages/PetAdotado';
 
 function MenuScreen({navigation}) {
   console.log('MenuScreen');
@@ -49,7 +54,7 @@ function MeusPetsScreen({navigation}) {
   return (
     <SafeAreaView>
       <Container>
-        <PetList navigation={navigation} />
+        <MeusPets navigation={navigation} />
       </Container>
     </SafeAreaView>
   );
@@ -71,7 +76,49 @@ function AdotarScreen({navigation}) {
   return (
     <SafeAreaView>
       <Container>
-        {/* <PetRegister navigation={navigation} /> */}
+        <Adotar navigation={navigation} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
+function RemoverPetScreen({route, navigation}) {
+  console.log('RemoverPetScreen');
+  return (
+    <SafeAreaView>
+      <Container>
+        <RemoverPet route={route} navigation={navigation} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
+function AdotarPetScreen({route, navigation}) {
+  console.log('AdotarPetScreen');
+  return (
+    <SafeAreaView>
+      <Container>
+        <PetAdotado route={route} navigation={navigation} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
+function PetScreen({route, navigation}) {
+  return (
+    <SafeAreaView>
+      <Container>
+        <Pet navigation={navigation} route={route}/>
+      </Container>
+    </SafeAreaView>
+  );
+}
+
+function InteressadosScreen({navigation, route}) {
+  return (
+    <SafeAreaView>
+      <Container>
+        <Interessados navigation={navigation} route={route}/>
       </Container>
     </SafeAreaView>
   );
@@ -85,9 +132,13 @@ export default function AppRoutes() {
       <AppStack.Screen name="Menu" component={MenuScreen} />
       <AppStack.Screen name="Perfil" component={MeuPerfilScreen} />
       <AppStack.Screen name="EditarPerfil" component={EditarPerfilScreen} />
-      <AppStack.Screen name="MeusPets" component={MeusPetsScreen } />
+      <AppStack.Screen name="MeusPets" component={MeusPetsScreen} />
+      <AppStack.Screen name="Pet" component={PetScreen} />
+      <AppStack.Screen name="Interessados" component={InteressadosScreen} />
       <AppStack.Screen name="CadastroPet" component={PetRegisterScreen} />
       <AppStack.Screen name="Adotar" component={AdotarScreen} />
+      <AppStack.Screen name="Remover pet" component={RemoverPetScreen} />
+      <AppStack.Screen name="Adotar pet" component={AdotarPetScreen} />
     </AppStack.Navigator>
   );
 }

@@ -4,6 +4,8 @@ import AuthContext from '../../contexts/auth';
 import {TextInputField} from '../../components/Field';
 import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
+import ImageSelection from '../../components/ImageSelection';
+import storage from '@react-native-firebase/storage';
 
 export default function UserRegister({navigation}) {
   const {register} = useContext(AuthContext);
@@ -18,6 +20,40 @@ export default function UserRegister({navigation}) {
   const [loginName, setLoginName] = useState();
   const [password, setPassword] = useState();
   const [senhaconf, setSenhaConf] = useState();
+
+  const [usrPhoto, setUsrPhoto] = useState();
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
+
+
+  const uploadImage = async () => {
+    console.log(usrPhoto);
+    const { uri } = usrPhoto;
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    setUploading(true);
+    setTransferred(0);
+    const task = storage()
+      .ref(filename)
+      .putFile(uploadUri);
+    // set progress state
+    task.on('state_changed', snapshot => {
+      setTransferred(
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+      );
+    });
+    try {
+      await task;
+    } catch (e) {
+      console.error(e);
+    }
+    setUploading(false);
+    // Alert.alert(
+    //   'Photo uploaded!',
+    //   'Your photo has been uploaded to Firebase Cloud Storage!'
+    // );
+    // setImage(null);
+  };
 
   return (
     <View>
@@ -74,9 +110,13 @@ export default function UserRegister({navigation}) {
         onChange={(value) => setSenhaConf(value)}
       />
 
+      <ImageSelection image={usrPhoto} onImagePicked={setUsrPhoto}/>
+
       <LargeButton
         title="Fazer Cadastro"
-        onPress={() =>
+        onPress={() => {
+          const photoFile = usrPhoto.uri.split('/').pop();
+          uploadImage();
           register(email, password, {
             name,
             age,
@@ -85,7 +125,9 @@ export default function UserRegister({navigation}) {
             telephone,
             address,
             state,
-          })
+            photoFile,
+          });
+          }
         }
       />
     </View>

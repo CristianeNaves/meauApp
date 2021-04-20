@@ -13,9 +13,9 @@ const LargeButton = ({title, onPress, style}) => {
 const SmallButton = ({title, onPress, type}) => {
   return (
     <View>
-      <Button title={title} />
+      <Button title={title} style={styles.smallButton} onPress={onPress}/>
     </View>
   );
 };
 
-export {LargeButton};
+export {LargeButton, SmallButton};
