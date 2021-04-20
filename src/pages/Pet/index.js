@@ -26,7 +26,7 @@ export default function Pet({route, navigation}) {
         t.push(temp);
       }
     });
-    return t.join(',');
+    return t.join(', ');
   }
 
   function getExigencias(exigencias) {
@@ -36,30 +36,33 @@ export default function Pet({route, navigation}) {
         e.push(temp);
       }
     });
-    return e.join(',');
+    return e.join(', ');
   }
 
-  const [petPhoto, setPetPhoto] = useState({uri: "https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png"});
+  const [petPhoto, setPetPhoto] = useState({
+    uri:
+      'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
+  });
 
   try {
     const image = storage().ref().child(pet.photoFile);
     // const image = images.child('image1');
-    image.getDownloadURL().then((url) => { 
-      setPetPhoto({ uri: url })
-      // console.log(petPhoto);
-    })
-    .catch(error => {
-      console.log("Não foi possível resgatar foto de animal.");
-    });
+    image
+      .getDownloadURL()
+      .then((url) => {
+        setPetPhoto({uri: url});
+      })
+      .catch(() => {
+        console.log('Não foi possível resgatar foto de animal.');
+      });
   } catch (error) {
-    console.log("Não foi possível resgatar foto de animal.");
+    console.log('Não foi possível resgatar foto de animal.');
   }
 
   return (
     <View>
-
       <View>
-        <LargeImage source={ petPhoto.uri } />
+        <LargeImage source={petPhoto.uri} />
       </View>
 
       <View>
@@ -90,7 +93,9 @@ export default function Pet({route, navigation}) {
         </View>
         <View style={styles.infoBox}>
           <Text style={[styles.infoTitle, colorStyle]}>Vermifugado</Text>
-          <Text style={styles.info}>{pet.saude.vermifugado ? 'Sim' : 'Não'}</Text>
+          <Text style={styles.info}>
+            {pet.saude.vermifugado ? 'Sim' : 'Não'}
+          </Text>
         </View>
       </View>
 
@@ -101,7 +106,9 @@ export default function Pet({route, navigation}) {
         </View>
         <View style={styles.infoBox}>
           <Text style={[styles.infoTitle, colorStyle]}>Doenças</Text>
-          <Text style={styles.info}>{pet.saude.doente ? pet.doencas : 'Não'}</Text>
+          <Text style={styles.info}>
+            {pet.saude.doente ? pet.doencas : 'Não'}
+          </Text>
         </View>
       </View>
 
@@ -114,14 +121,6 @@ export default function Pet({route, navigation}) {
 
       <View style={styles.line} />
 
-      {/*<View>
-        <Text style={styles.infoTitle}>
-          {pet.sexo === 'Macho' ? 'O' : 'A'} {pet.petName} precisa de
-        </Text>
-      </View>*/}
-
-      <View style={styles.line} />
-
       <View>
         <Text style={[styles.infoTitle, colorStyle]}>Exigências do doador</Text>
         <Text style={styles.info}>{getExigencias(pet.exigencias)}</Text>
@@ -130,13 +129,16 @@ export default function Pet({route, navigation}) {
       <View style={styles.line} />
 
       <View style={{marginBottom:28}}>
-        <Text style={[styles.infoTitle, colorStyle]}>Mais sobre {pet.petName}</Text>
-        <Text style={styles.info}>{pet.sobre ? pet.sobre : 'Nenhuma informação adicional.'}</Text>
+        <Text style={[styles.infoTitle, colorStyle]}>
+          Mais sobre {pet.petName}
+        </Text>
+        <Text style={styles.info}>
+          {pet.sobre ? pet.sobre : 'Nenhuma informação adicional.'}
+        </Text>
       </View>
 
       {user.uid === pet.userId ? (
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          
           <Button
             mode="contained"
             color="#88c9bf"
@@ -145,11 +147,13 @@ export default function Pet({route, navigation}) {
               fontFamily: 'Roboto Medium',
               fontSize: 12,
             }}
-            onPress={() => {
-            if(pet.intentios != null) navigation.navigate('Interessados', pet);
-            else Alert.alert("Não há interessados na adoção ainda.");
-          }}>Interessados</Button>
-
+            onPress={() =>
+              pet.intentios
+                ? navigation.navigate('Interessados', pet)
+                : Alert.alert('Não há interessados na adoção ainda.')
+            }>
+            Interessados
+          </Button>
           <Button
             mode="contained"
             color="#88c9bf"
@@ -160,11 +164,12 @@ export default function Pet({route, navigation}) {
             }}
             onPress={() => {
               console.warn(pet);
-              remove(pet.id).then((response) => {
+              remove(pet.id).then(() => {
                 navigation.navigate('Remover pet', {name: pet.petName});
               });
-            }}
-          >Remover Pet</Button>
+            }}>
+            Remover Pet
+          </Button>
         </View>
       ) : (
         <Button
