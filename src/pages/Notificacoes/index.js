@@ -30,17 +30,22 @@ const Notificacao = ({
     loadData();
   }, []);
 
+  console.warn(sender);
+  console.warn(pet);
+
   return (
     <ListItem
       bottomDivider
       key={notification.id}
       onPress={() => navigation.navigate('Interessados', pet)}>
-      <Avatar rounded source={{uri: sender.photoFile}} />
+      {sender ? <Avatar rounded source={{uri: sender.photoFile}} /> : null}
       <ListItem.Content>
         {notification.type === 'adoptionIntention' ? (
           <View>
             <ListItem.Title>Intenção de Adotar</ListItem.Title>
-            <ListItem.Subtitle>{`${sender.name} tem interesse em adotar ${pet.petName}`}</ListItem.Subtitle>
+            {sender ? (
+              <ListItem.Subtitle>{`${sender.name} tem interesse em adotar ${pet.petName}`}</ListItem.Subtitle>
+            ) : null}
           </View>
         ) : (
           <View />
