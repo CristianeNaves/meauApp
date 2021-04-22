@@ -37,7 +37,11 @@ const Notificacao = ({
     <ListItem
       bottomDivider
       key={notification.id}
-      onPress={() => navigation.navigate('Interessados', pet)}>
+      onPress={() => {
+        if (notification.type === 'adoptionIntention') {
+          navigation.navigate('Interessados', pet);
+        }
+      }}>
       {sender ? <Avatar rounded source={{uri: sender.photoFile}} /> : null}
       <ListItem.Content>
         {notification.type === 'adoptionIntention' ? (
@@ -47,9 +51,21 @@ const Notificacao = ({
               <ListItem.Subtitle>{`${sender.name} tem interesse em adotar ${pet.petName}`}</ListItem.Subtitle>
             ) : null}
           </View>
-        ) : (
-          <View />
-        )}
+        ) : notification.type === 'confirmNotification' ? (
+          <View>
+            <ListItem.Title>Confirmação de Adoção</ListItem.Title>
+            {sender ? (
+              <ListItem.Subtitle>{`${sender.name} confirmou a adoção do ${pet.petName}`}</ListItem.Subtitle>
+            ) : null}
+          </View>
+        ) : notification.type === 'negationNotification' ? (
+          <View>
+            <ListItem.Title>Negação de Adoção</ListItem.Title>
+            {sender ? (
+              <ListItem.Subtitle>{`${sender.name} negou a adoção do ${pet.petName}`}</ListItem.Subtitle>
+            ) : null}
+          </View>
+        ) : null}
       </ListItem.Content>
       <CheckBox
         title=""

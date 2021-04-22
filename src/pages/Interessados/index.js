@@ -1,9 +1,8 @@
+/* eslint-disable prettier/prettier */
 import React, {useContext, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {getInteressados} from '../../services/user';
-import {ListItem} from 'react-native-elements';
-import { LargeImage } from '../../components/Image';
 import {Button, Card} from 'react-native-paper';
 import styles from './style';
 
@@ -11,21 +10,23 @@ import storage from '@react-native-firebase/storage';
 import { update } from '../../services/pet';
 import { Alert } from 'react-native';
 
-const InteressadoItem = ({navigation, interessado, pet}) => {
+import {adoptionConfirmNotification, adoptionNegationNotification} from '../../services/notifications';
 
-  const [interessadoPhoto, setInteressadoPhoto] = useState({uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU"});
+const InteressadoItem = ({navigation, interessado, pet, user}) => {
+
+  const [interessadoPhoto, setInteressadoPhoto] = useState({uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU'});
 
   try {
     const image = storage().ref().child(interessado.photoFile);
     // const image = images.child('image1');
-    image.getDownloadURL().then((url) => { 
-      setInteressadoPhoto({ uri: url })
+    image.getDownloadURL().then((url) => {
+      setInteressadoPhoto({ uri: url });
     })
     .catch(error => {
-      console.log("Não foi possível resgatar foto do interessado.");
+      console.log('Não foi possível resgatar foto do interessado.');
     });
   } catch (error) {
-    console.log("Não foi possível resgatar foto do interessado.");
+    console.log('Não foi possível resgatar foto do interessado.');
   }
 
   return (
@@ -88,6 +89,7 @@ const InteressadoItem = ({navigation, interessado, pet}) => {
               pet.userId = interessado.id;
               update(pet.id, pet).then((response) => {
                 navigation.navigate('Adotar pet', {name: pet.petName});
+                adoptionConfirmNotification(pet, interessado, user);
               });
             } }
           ]
@@ -109,6 +111,7 @@ const InteressadoItem = ({navigation, interessado, pet}) => {
               pet.intentios.pop(interessado.id);
               update(pet.id, pet).then((response) => {
                 navigation.navigate('Interessados', pet);
+                adoptionNegationNotification(pet, interessado, user);
               });
             } }
           ]
@@ -127,16 +130,12 @@ export default function Interessados({navigation, route}) {
   useEffect(() => {
     let isCancelled = false;
     getInteressados(route.params).then((intentions) => {
-      console.log("intentions");
-      console.log(intentions);
       intentions.forEach((interessado) => {
         if (!isCancelled) {
           setInteressados((oldInteressados) => [...oldInteressados, {...interessado.data(), id: interessado.id}]);
-          console.log("interessados");
-          console.log(interessados);
         }
       });
-      
+
     });
     return () => {
       isCancelled = true;
@@ -146,7 +145,7 @@ export default function Interessados({navigation, route}) {
   return (
     <View>
       {interessados.map((interessado) => (
-        <InteressadoItem navigation={navigation} interessado={interessado} pet={route.params} />
+        <InteressadoItem navigation={navigation} interessado={interessado} pet={route.params} user={user} />
       ))}
     </View>
   );
