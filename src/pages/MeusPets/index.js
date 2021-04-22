@@ -75,7 +75,8 @@ const PetCard = ({navigation, pet}) => {
       />
       <Card.Cover source={{uri: petPhoto.uri}} />
       <Button labelStyle={styles.bottomInfo} onPress={() => {
-        if(pet.intentios != null) navigation.navigate('Interessados', pet);
+        console.log(pet.intentios);
+        if((pet.intentios != null) && (pet.intentios.length > 0))  navigation.navigate('Interessados', pet);
         else Alert.alert("Não há interessados na adoção ainda.");
       }}>Interessados</Button>
       {/* <Button labelStyle={styles.bottomInfo}>Apadrinhamento | Ajuda</Button> */}

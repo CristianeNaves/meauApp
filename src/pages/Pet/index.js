@@ -147,10 +147,10 @@ export default function Pet({route, navigation}) {
               fontFamily: 'Roboto Medium',
               fontSize: 12,
             }}
-            onPress={() =>
-              pet.intentios
-                ? navigation.navigate('Interessados', pet)
-                : Alert.alert('Não há interessados na adoção ainda.')
+            onPress={() => {
+              if((pet.intentios != null) && (pet.intentios.length > 0))  navigation.navigate('Interessados', pet);
+              else Alert.alert("Não há interessados na adoção ainda.");
+            }
             }>
             Interessados
           </Button>
