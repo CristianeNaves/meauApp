@@ -1,9 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
+import {adoptionIntentionNotification} from '../services/notifications';
 
 const get = async (petId) => {
   try {
     const pet = await firestore().collection('Pets').doc(petId).get();
-    return pet; //verificar como está retornando
+    return pet;
   } catch (error) {
     console.log(error);
   }
@@ -30,15 +31,16 @@ const getPetLocalization = async (userId) => {
   return user.data();
 };
 
-const sentAdoptionIntention = (petId, userId) => {
-  const path = `Pets/${petId}`;
+const sentAdoptionIntention = (pet, sender) => {
+  const path = `Pets/${pet.id}`;
   firestore()
     .doc(path)
     .update({
-      intentios: firestore.FieldValue.arrayUnion(userId),
+      intentios: firestore.FieldValue.arrayUnion(sender.uid),
     })
     .then(() => {
       console.log('adicionada intenção de adotar');
+      adoptionIntentionNotification(pet.id, pet.userId, sender.uid);
     });
 };
 
@@ -79,6 +81,7 @@ const remove = async (petId) => {
 };
 
 export {
+  get,
   getAll,
   create,
   update,
