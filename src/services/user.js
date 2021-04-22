@@ -3,7 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 const get = async (userId) => {
   try {
     const user = await firestore().collection('users').doc(userId).get();
-    return user; //verificar como está retornando
+    return user;
   } catch (error) {
     console.log(error);
   }
@@ -59,6 +59,9 @@ const remove = async (userId) => {
 };
 
 const getInteressados = async (pet) => {
+  if (pet.intentios.length <= 0) {
+    return [];
+  }
   const interessados = await firestore()
     .collection('users')
     // .where('name', '==', "testonildo2")

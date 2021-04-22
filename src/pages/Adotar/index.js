@@ -3,29 +3,32 @@ import {View, Text} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {getPetsForAdoption, getPetLocalization} from '../../services/pet';
 import {ListItem} from 'react-native-elements';
-import { LargeImage } from '../../components/Image';
-import {Button, Card} from 'react-native-paper';
+import {LargeImage} from '../../components/Image';
+import {Card} from 'react-native-paper';
 import styles from './style';
 
 import storage from '@react-native-firebase/storage';
 
-
 const PetItem = ({navigation, pet}) => {
 
-  const [petPhoto, setPetPhoto] = useState({uri: "https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png"});
+  const [petPhoto, setPetPhoto] = useState({
+    uri:
+      'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
+  });
 
   try {
     const image = storage().ref().child(pet.photoFile);
     // const image = images.child('image1');
-    image.getDownloadURL().then((url) => { 
-      setPetPhoto({ uri: url })
-      // console.log(petPhoto);
-    })
-    .catch(error => {
-      console.log("Não foi possível resgatar foto de animal.");
-    });
+    image
+      .getDownloadURL()
+      .then((url) => {
+        setPetPhoto({uri: url});
+      })
+      .catch(() => {
+        console.log('Não foi possível resgatar foto de animal.');
+      });
   } catch (error) {
-    console.log("Não foi possível resgatar foto de animal.");
+    console.log('Não foi possível resgatar foto de animal.');
   }
 
   return (
@@ -53,20 +56,24 @@ const PetCard = ({navigation, pet}) => {
     setLocalization(request);
   };
 
-  const [petPhoto, setPetPhoto] = useState({uri: "https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png"});
+  const [petPhoto, setPetPhoto] = useState({
+    uri:
+      'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
+  });
 
   try {
     const image = storage().ref().child(pet.photoFile);
     // const image = images.child('image1');
-    image.getDownloadURL().then((url) => { 
-      setPetPhoto({ uri: url })
-      // console.log(petPhoto);
-    })
-    .catch(error => {
-      console.log("Não foi possível resgatar foto de animal.");
-    });
+    image
+      .getDownloadURL()
+      .then((url) => {
+        setPetPhoto({uri: url});
+      })
+      .catch(() => {
+        console.log('Não foi possível resgatar foto de animal.');
+      });
   } catch (error) {
-    console.log("Não foi possível resgatar foto de animal.");
+    console.log('Não foi possível resgatar foto de animal.');
   }
 
   useEffect(() => {

@@ -15,6 +15,7 @@ import Pet from '../pages/Pet';
 import RemoverPet from '../pages/RemoverPet';
 import Interessados from '../pages/Interessados';
 import PetAdotado from '../pages/PetAdotado';
+import Notificacoes from '../pages/Notificacoes';
 
 function MenuScreen({navigation}) {
   console.log('MenuScreen');
@@ -124,6 +125,16 @@ function InteressadosScreen({navigation, route}) {
   );
 }
 
+function NotificacoesScreen({navigation}) {
+  return (
+    <SafeAreaView>
+      <Container>
+        <Notificacoes navigation={navigation} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
 const AppStack = createStackNavigator();
 
 export default function AppRoutes() {
@@ -139,6 +150,7 @@ export default function AppRoutes() {
       <AppStack.Screen name="Adotar" component={AdotarScreen} />
       <AppStack.Screen name="Remover pet" component={RemoverPetScreen} />
       <AppStack.Screen name="Adotar pet" component={AdotarPetScreen} />
+      <AppStack.Screen name="Notificacoes" component={NotificacoesScreen} />
     </AppStack.Navigator>
   );
 }

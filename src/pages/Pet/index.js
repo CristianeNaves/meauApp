@@ -181,7 +181,7 @@ export default function Pet({route, navigation}) {
           }}
           color="#fdcf58"
           onPress={() => {
-            sentAdoptionIntention(pet.id, user.uid);
+            sentAdoptionIntention(pet, user);
           }}>
           Pretendo Adotar
         </Button>
