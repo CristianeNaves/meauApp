@@ -18,6 +18,7 @@ export default function Menu( {navigation} ) {
       <LargeButton title="Adotar" onPress={() => navigation.navigate('Adotar')} />
 
       <LargeButton title="Notificações" onPress={() => navigation.navigate('Notificacoes')}/>
+      <LargeButton title="Chats" onPress={() => navigation.navigate('Chats')}/>
 
       <LargeButton title="Logout" onPress={() => logOut()} />
     </View>
