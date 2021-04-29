@@ -7,7 +7,6 @@ import {LargeImage} from '../../components/Image';
 import AuthContext from '../../contexts/auth';
 import {remove, sentAdoptionIntention} from '../../services/pet';
 
-
 import storage from '@react-native-firebase/storage';
 
 export default function Pet({route, navigation}) {
@@ -128,7 +127,7 @@ export default function Pet({route, navigation}) {
 
       <View style={styles.line} />
 
-      <View style={{marginBottom:28}}>
+      <View style={{marginBottom: 28}}>
         <Text style={[styles.infoTitle, colorStyle]}>
           Mais sobre {pet.petName}
         </Text>
@@ -148,10 +147,10 @@ export default function Pet({route, navigation}) {
               fontSize: 12,
             }}
             onPress={() => {
-              if((pet.intentios != null) && (pet.intentios.length > 0))  navigation.navigate('Interessados', pet);
-              else Alert.alert("Não há interessados na adoção ainda.");
-            }
-            }>
+              if (pet.intentios != null && pet.intentios.length > 0)
+                navigation.navigate('Interessados', pet);
+              else Alert.alert('Não há interessados na adoção ainda.');
+            }}>
             Interessados
           </Button>
           <Button
@@ -163,7 +162,6 @@ export default function Pet({route, navigation}) {
               fontSize: 12,
             }}
             onPress={() => {
-              console.warn(pet);
               remove(pet.id).then(() => {
                 navigation.navigate('Remover pet', {name: pet.petName});
               });

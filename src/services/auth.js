@@ -6,7 +6,7 @@ export async function logIn(email, password) {
     const response = await auth().signInWithEmailAndPassword(email, password);
     return getUserDocument(response.user.uid);
   } catch (error) {
-    console.warn(error);
+    console.log(error);
   }
 }
 
@@ -14,7 +14,7 @@ export async function logOut() {
   try {
     await auth().signOut();
   } catch (error) {
-    console.warn(error);
+    console.log(error);
   }
 }
 
@@ -26,7 +26,7 @@ export async function register(email, password, other_info) {
     );
     return generateUserDocument(response.user, other_info);
   } catch (error) {
-    console.warn(error);
+    console.log(error);
   }
 }
 

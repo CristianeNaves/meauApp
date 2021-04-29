@@ -30,9 +30,6 @@ const Notificacao = ({
     loadData();
   }, []);
 
-  console.warn(sender);
-  console.warn(pet);
-
   return (
     <ListItem
       bottomDivider

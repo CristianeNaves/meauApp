@@ -9,7 +9,7 @@ import EditarPerfil from '../pages/EditarPerfil';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaView} from 'react-native';
 import {Container} from '../styles/container';
-import MeusPets from '../pages/MeusPets/index';
+import MeusPets from '../pages/MeusPets';
 import Adotar from '../pages/Adotar';
 import Pet from '../pages/Pet';
 import RemoverPet from '../pages/RemoverPet';
