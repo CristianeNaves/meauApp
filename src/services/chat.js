@@ -80,7 +80,7 @@ const getChat = async (userA, userB) => {
 const getChats = async (user) => {
   const chat = await firestore()
     .collection('chats')
-    .where(user, 'in', 'users')
+    .where('users', 'array-contains', user)
     .get();
   return chat;
 };

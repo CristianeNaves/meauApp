@@ -13,7 +13,8 @@ import { Alert } from 'react-native';
 import {adoptionConfirmNotification, adoptionNegationNotification} from '../../services/notifications';
 
 const ChatItem = ({navigation, destinatario}) => {
-
+  const {user} = useContext(AuthContext);
+  const destinatarioID = (destinatario.users[0] == user.uid) ? destinatario.users[1] : destinatario.users[0];
   const [destinatarioPhoto, setDestinatarioPhoto] = useState({uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU'});
 
   try {
@@ -49,13 +50,14 @@ export default function Chats({navigation}) {
   const {user} = useContext(AuthContext);
   const [chats, setChats] = useState([]);
 
-  // console.log(route);
+  console.log("to no chats");
   useEffect(() => {
     let isCancelled = false;
-    getChats(user.userId).then((destinatarios) => {
+    getChats(user.uid).then((destinatarios) => {
       destinatarios.forEach((destinatario) => {
         if (!isCancelled) {
           setChats((oldChats) => [...oldChats, {...destinatario.data(), id: destinatario.id}]);
+          console.log(destinatario.data());
         }
       });
 
