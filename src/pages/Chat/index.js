@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useState, useContext} from 'react';
 import {View, Text, Alert} from 'react-native';
 import styles from './style';
@@ -8,23 +9,23 @@ import {SmallImage} from '../../components/Image';
 import storage from '@react-native-firebase/storage';
 import SimpleChat from "react-native-simple-chat";
 
-const arr = [
-    {
-      senderFlag: true,
-      text: 'hello',
-    },
-    {
-      senderFlag: false,
-      text: 'teste',
-    },
-  ];
+import {chatNotification} from '../../services/notifications';
 
+const arr = [
+  {
+    senderFlag: true,
+    text: 'hello',
+  },
+  {
+    senderFlag: false,
+    text: 'teste',
+  },
+];
 
 export default function Chat({route, navigation}) {
   const [chat, setChat] = useState(route.params ? route.params : {});
   const [messages, setMessages] = React.useState(arr);
   const {user} = useContext(AuthContext);
-
 //   const colorStyle =
 //     user.uid === pet.userId
 //       ? styles.infoTitleMeusPets
@@ -53,6 +54,8 @@ export default function Chat({route, navigation}) {
   const sendMessage = (newMessage) => {
     const newMessageObj = { senderFlag: true, text: newMessage };
     setMessages([...messages, newMessageObj]);
+    //enviar notificação
+    chatNotification(chat, user);
   };
 
   return (
@@ -67,7 +70,7 @@ export default function Chat({route, navigation}) {
         sendButtonText="Enviar"
         onPressSendButton={sendMessage}
       />
-      
+
     </View>
   );
 }

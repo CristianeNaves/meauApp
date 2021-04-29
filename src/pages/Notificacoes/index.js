@@ -40,6 +40,8 @@ const Notificacao = ({
       onPress={() => {
         if (notification.type === 'adoptionIntention') {
           navigation.navigate('Interessados', pet);
+        } else if (notification.type === 'chatNotification') {
+          console.log('ir ate a pagina de chat');
         }
       }}>
       {sender ? <Avatar rounded source={{uri: sender.photoFile}} /> : null}
@@ -63,6 +65,13 @@ const Notificacao = ({
             <ListItem.Title>Negação de Adoção</ListItem.Title>
             {sender ? (
               <ListItem.Subtitle>{`${sender.name} negou a adoção do ${pet.petName}`}</ListItem.Subtitle>
+            ) : null}
+          </View>
+        ) : notification.type === 'chatNotification' ? (
+          <View>
+            <ListItem.Title>Nova mensagem</ListItem.Title>
+            {sender ? (
+              <ListItem.Subtitle>{`${sender.name} enviou uma nova mensagem.`}</ListItem.Subtitle>
             ) : null}
           </View>
         ) : null}
