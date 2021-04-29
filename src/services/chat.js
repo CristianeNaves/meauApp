@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import firestore from '@react-native-firebase/firestore';
 
 const get = async (chatId) => {

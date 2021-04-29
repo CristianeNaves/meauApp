@@ -4,7 +4,7 @@ import {getAll, remove} from '../../services/notifications';
 import * as petService from '../../services/pet';
 import * as userService from '../../services/user';
 import AuthContext from '../../contexts/auth';
-import {ListItem, Avatar, CheckBox} from 'react-native-elements';
+import {ListItem, Button, Icon} from 'react-native-elements';
 
 const Notificacao = ({
   notification,
@@ -12,7 +12,6 @@ const Notificacao = ({
   notifications,
   setNotifications,
 }) => {
-  const [checked, setChecked] = useState(false);
   const [pet, setPet] = useState(null);
   const [sender, setSender] = useState(null);
 
@@ -41,7 +40,6 @@ const Notificacao = ({
           console.log('ir ate a pagina de chat');
         }
       }}>
-      {sender ? <Avatar rounded source={{uri: sender.photoFile}} /> : null}
       <ListItem.Content>
         {notification.type === 'adoptionIntention' ? (
           <View>
@@ -73,9 +71,8 @@ const Notificacao = ({
           </View>
         ) : null}
       </ListItem.Content>
-      <CheckBox
-        title=""
-        checked={checked}
+      <Button
+        icon={<Icon name="close" size={10} color="white" />}
         onPress={() => {
           Alert.alert(
             'Apagar a notificação',
