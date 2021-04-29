@@ -11,10 +11,12 @@ import { update } from '../../services/pet';
 import { Alert } from 'react-native';
 
 import {adoptionConfirmNotification, adoptionNegationNotification} from '../../services/notifications';
+import { getChat, newChat } from '../../services/chat';
 
 const InteressadoItem = ({navigation, interessado, pet, user}) => {
 
   const [interessadoPhoto, setInteressadoPhoto] = useState({uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU'});
+  const [chats, setChats] = useState([]);
 
   try {
     const image = storage().ref().child(interessado.photoFile);
@@ -30,43 +32,33 @@ const InteressadoItem = ({navigation, interessado, pet, user}) => {
   }
 
   return (
-    // <View>
-    //   <ListItem
-    //     key={interessado.id}
-    //     bottomDivider
-    //     onPress={() => {
-    //       var texto = `Permitir que ${interessado.name} adote ${pet.petName} ?`;
-    //       Alert.alert(
-    //         "Confirmar adoção?",
-    //         texto,
-    //         [
-    //           {
-    //             text: "Cancelar",
-    //             onPress: () => {},
-    //           },
-    //           { text: "Ok", onPress: () => {
-    //             // navigation.navigate('Perfil', interessado);
-    //             pet.intentios = null;
-    //             pet.userId = interessado.id;
-    //             update(pet.id, pet).then((response) => {
-    //               navigation.navigate('Adotar pet', {name: pet.petName});
-    //             });
-    //           } }
-    //         ]
-    //       );
-          
-    //     }}>
-    //     <LargeImage source={interessadoPhoto.uri} />
-    //     <ListItem.Content>
-    //       <ListItem.Title>{interessado.name}</ListItem.Title>
-    //     </ListItem.Content>
-    //   </ListItem>
-    // </View>
-
-
     <Card
       style={{marginBottom: 12}}
-      onPress={() => navigation.navigate('Perfil', interessado)}>
+      onPress={() => {
+        console.log(getChat(user.uid, interessado.id));
+        let chatVazio = true;
+        getChat(user.uid, interessado.id).then((conversas) => {
+          conversas.forEach((chat) => {
+              setChats((oldChats) => [...oldChats, {...chat.data(), id: chat.id}]);
+              console.log(chat.data());
+              if(chat.data()) chatVazio = false;
+          });
+    
+          setTimeout(function(){ 
+            console.log(chats);
+            console.log(chatVazio);
+            console.log("chats length: " + chats.length);
+            if((chats.length == 0) && (chatVazio)) newChat(user.uid, interessado.id);
+            // if((chats.length == 0) && (chatVazio)) console.log("criaria um novo chat");
+
+            console.log("navegando Chat");
+            navigation.navigate('Chat', interessado);
+          }, 1000);
+        });
+
+        
+        
+      }}>
       <Card.Title
         title={interessado.name}
         style={{backgroundColor: '#cfe9e5'}}

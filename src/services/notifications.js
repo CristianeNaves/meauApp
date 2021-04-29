@@ -33,6 +33,16 @@ const adoptionNegationNotification = (pet, receiver, sender) => {
   create(notification);
 };
 
+const chatNotification = (receiver, sender) => {
+  const notification = {
+    receiver: receiver.id,
+    sender: sender.uid,
+    type: 'chatNotification',
+  };
+
+  create(notification);
+};
+
 const getAll = async (userId) => {
   const notifications = await firestore()
     .collection('Notifications')
@@ -75,4 +85,5 @@ export {
   adoptionIntentionNotification,
   adoptionConfirmNotification,
   adoptionNegationNotification,
+  chatNotification,
 };

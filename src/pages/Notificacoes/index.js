@@ -4,7 +4,7 @@ import {getAll, remove} from '../../services/notifications';
 import * as petService from '../../services/pet';
 import * as userService from '../../services/user';
 import AuthContext from '../../contexts/auth';
-import {ListItem, Avatar, CheckBox} from 'react-native-elements';
+import {ListItem, Button, Icon} from 'react-native-elements';
 
 const Notificacao = ({
   notification,
@@ -12,7 +12,6 @@ const Notificacao = ({
   notifications,
   setNotifications,
 }) => {
-  const [checked, setChecked] = useState(false);
   const [pet, setPet] = useState(null);
   const [sender, setSender] = useState(null);
 
@@ -30,9 +29,6 @@ const Notificacao = ({
     loadData();
   }, []);
 
-  console.warn(sender);
-  console.warn(pet);
-
   return (
     <ListItem
       bottomDivider
@@ -40,9 +36,10 @@ const Notificacao = ({
       onPress={() => {
         if (notification.type === 'adoptionIntention') {
           navigation.navigate('Interessados', pet);
+        } else if (notification.type === 'chatNotification') {
+          console.log('ir ate a pagina de chat');
         }
       }}>
-      {sender ? <Avatar rounded source={{uri: sender.photoFile}} /> : null}
       <ListItem.Content>
         {notification.type === 'adoptionIntention' ? (
           <View>
@@ -65,11 +62,17 @@ const Notificacao = ({
               <ListItem.Subtitle>{`${sender.name} negou a adoção do ${pet.petName}`}</ListItem.Subtitle>
             ) : null}
           </View>
+        ) : notification.type === 'chatNotification' ? (
+          <View>
+            <ListItem.Title>Nova mensagem</ListItem.Title>
+            {sender ? (
+              <ListItem.Subtitle>{`${sender.name} enviou uma nova mensagem.`}</ListItem.Subtitle>
+            ) : null}
+          </View>
         ) : null}
       </ListItem.Content>
-      <CheckBox
-        title=""
-        checked={checked}
+      <Button
+        icon={<Icon name="close" size={10} color="white" />}
         onPress={() => {
           Alert.alert(
             'Apagar a notificação',

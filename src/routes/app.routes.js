@@ -9,13 +9,15 @@ import EditarPerfil from '../pages/EditarPerfil';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaView} from 'react-native';
 import {Container} from '../styles/container';
-import MeusPets from '../pages/MeusPets/index';
+import MeusPets from '../pages/MeusPets';
 import Adotar from '../pages/Adotar';
 import Pet from '../pages/Pet';
 import RemoverPet from '../pages/RemoverPet';
 import Interessados from '../pages/Interessados';
 import PetAdotado from '../pages/PetAdotado';
 import Notificacoes from '../pages/Notificacoes';
+import Chat from '../pages/Chat';
+import Chats from '../pages/Chats';
 
 function MenuScreen({navigation}) {
   console.log('MenuScreen');
@@ -135,6 +137,26 @@ function NotificacoesScreen({navigation}) {
   );
 }
 
+function ChatScreen({navigation, route}) {
+  return (
+    <SafeAreaView>
+      <Container>
+        <Chat navigation={navigation} route={route} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
+function ChatsScreen({navigation}) {
+  return (
+    <SafeAreaView>
+      <Container>
+        <Chats navigation={navigation} />
+      </Container>
+    </SafeAreaView>
+  );
+}
+
 const AppStack = createStackNavigator();
 
 export default function AppRoutes() {
@@ -151,6 +173,8 @@ export default function AppRoutes() {
       <AppStack.Screen name="Remover pet" component={RemoverPetScreen} />
       <AppStack.Screen name="Adotar pet" component={AdotarPetScreen} />
       <AppStack.Screen name="Notificacoes" component={NotificacoesScreen} />
+      <AppStack.Screen name="Chat" component={ChatScreen} />
+      <AppStack.Screen name="Chats" component={ChatsScreen} />
     </AppStack.Navigator>
   );
 }
