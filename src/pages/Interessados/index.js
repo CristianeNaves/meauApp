@@ -52,7 +52,7 @@ const InteressadoItem = ({navigation, interessado, pet, user}) => {
             // if((chats.length == 0) && (chatVazio)) console.log("criaria um novo chat");
 
             console.log("navegando Chat");
-            navigation.navigate('Chat', interessado);
+            navigation.navigate('Chat', interessado.id);
           }, 1000);
         });
 

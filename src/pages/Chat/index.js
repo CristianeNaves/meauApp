@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, Alert} from 'react-native';
 import styles from './style';
 import AuthContext from '../../contexts/auth';
 import {remove, sentAdoptionIntention} from '../../services/pet';
+import {getChat} from '../../services/chat';
+import {get} from '../../services/user';
 import {SmallImage} from '../../components/Image';
 
 import storage from '@react-native-firebase/storage';
@@ -22,55 +24,113 @@ const arr = [
   },
 ];
 
-export default function Chat({route, navigation}) {
-  const [chat, setChat] = useState(route.params ? route.params : {});
-  const [messages, setMessages] = React.useState(arr);
+export default function Chat({navigation, route}) {
+  console.log(route); // undefined
   const {user} = useContext(AuthContext);
-//   const colorStyle =
-//     user.uid === pet.userId
-//       ? styles.infoTitleMeusPets
-//       : styles.infoTitleAdoption;
+  const [chat, setChat] = useState();
+  const [chatID, setChatID] = useState();
+  const [destinatario, setDestinatario] = useState();
+  const [destinatarioID, setDestinatarioID] = useState(route.params ? route.params : {});
+  const [messages, setMessages] = React.useState(arr);
+  
+  console.log("Destinatario ID: " + destinatarioID);
+  // const colorStyle =
+  //   user.uid === pet.userId
+  //     ? styles.infoTitleMeusPets
+  //     : styles.infoTitleAdoption;
 
   const [chatPhoto, setChatPhoto] = useState({
     uri:
       'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
   });
 
-  try {
-    const image = storage().ref().child(user.photoFile);
-    // const image = images.child('image1');
-    image
-      .getDownloadURL()
-      .then((url) => {
-        setChatPhoto({uri: url});
-      })
-      .catch(() => {
-        console.log('Não foi possível resgatar foto do remetente.');
+  useEffect(() => {
+    let isCancelled = false;
+
+    // ----------- GET DEST ------------------
+    get(destinatarioID).then((response) => {
+      console.log(response.data());
+      setDestinatario(response.data());
+
+      try {
+        const image = storage().ref().child(destinatario.photoFile);
+        // const image = images.child('image1');
+        image.getDownloadURL().then((url) => {
+          setChatPhoto({ uri: url });
+        })
+        .catch(error => {
+          console.log('Não foi possível resgatar foto do destinatario.');
+        });
+      } catch (error) {
+        console.log('Não foi possível resgatar foto do destinatario.');
+      }
+
+      
+
+    });
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isCancelled = false;
+    console.log("uid: " + user.uid);
+    console.log("dest id: " + destinatarioID);
+
+    // ----------- GET CHAT --------------
+    getChat(user.uid, destinatarioID).then((response) => {
+      console.log("GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT ");
+      // response.forEach((chat) => {
+        // setChat((oldChat) => [...oldChat, {...chat.data(), id: chat.id}]);
+        setChat("chat: "+chat.data());
+        setChatID("chat id: "+chat.id);
+        console.log(chat.data());
+      // });
+      
+      setTimeout(function(){console.log(chat);
+      // setChat(response.data());
+      setMessages(chat.messages);
+
+      messages.forEach(mensagem => {
+        mensagem.senderFlag = (mensagem.sender == user.uid) ? true : false;
       });
-  } catch (error) {
-    console.log('Não foi possível resgatar foto do remetente.');
-  }
+      console.log("MENSAGENS: ");
+      console.log(messages);}, 1000);
+    });
+    return () => {
+      isCancelled = true;
+      return (
+        <Text>Erro procurando chats</Text>
+      );
+    };
+  }, []);
 
   const sendMessage = (newMessage) => {
     const newMessageObj = { senderFlag: true, text: newMessage };
     setMessages([...messages, newMessageObj]);
     //enviar notificação
-    chatNotification(chat, user);
+    chatNotification(destinatarioID, user);
   };
 
-  return (
-    <View>
+  if(chat){
+    return (
       <View>
-        <SmallImage source={chatPhoto.uri} />
-
+        <View>
+          <SmallImage source={chatPhoto.uri} /> 
+          <Text>{destinatario.name}</Text> 
+        </View>
+  
+        <SimpleChat
+          data={messages}
+          sendButtonText="Enviar"
+          onPressSendButton={sendMessage}
+        />
+  
       </View>
-
-      <SimpleChat
-        data={messages}
-        sendButtonText="Enviar"
-        onPressSendButton={sendMessage}
-      />
-
-    </View>
-  );
+    );
+  } else {
+    return null;
+  }
+  
 }

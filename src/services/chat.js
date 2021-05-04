@@ -73,7 +73,10 @@ const getChat = async (userA, userB) => {
     .collection('chats')
     // .where(userA, 'in', 'users')
     // .where(userB, 'in', 'users')
-    .where('users', 'array-contains-any', [userA, userB])
+    // .where('users', 'array-contains-any', [userA, userB])
+    .where('users', 'array-contains-any', [userA])
+    .where('users', 'array-contains-any', [userB])
+    .limit(1)
     .get();
   return chat;
 };
