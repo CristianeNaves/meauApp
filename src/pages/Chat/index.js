@@ -25,108 +25,120 @@ const arr = [
 ];
 
 export default function Chat({navigation, route}) {
-  console.log(route); // undefined
   const {user} = useContext(AuthContext);
   const [chat, setChat] = useState();
   const [chatID, setChatID] = useState();
-  const [destinatario, setDestinatario] = useState();
-  const [destinatarioID, setDestinatarioID] = useState(route.params ? route.params : {});
-  const [messages, setMessages] = React.useState(arr);
-  
-  console.log("Destinatario ID: " + destinatarioID);
-  // const colorStyle =
-  //   user.uid === pet.userId
-  //     ? styles.infoTitleMeusPets
-  //     : styles.infoTitleAdoption;
-
+  const destinatario = route.params ? route.params : {};
+  console.log('dest: ', destinatario);
+  const [messages, setMessages] = React.useState();
   const [chatPhoto, setChatPhoto] = useState({
     uri:
       'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
   });
 
-  useEffect(() => {
-    let isCancelled = false;
-
-    // ----------- GET DEST ------------------
-    get(destinatarioID).then((response) => {
-      console.log(response.data());
-      setDestinatario(response.data());
-
-      try {
-        const image = storage().ref().child(destinatario.photoFile);
-        // const image = images.child('image1');
-        image.getDownloadURL().then((url) => {
-          setChatPhoto({ uri: url });
-        })
-        .catch(error => {
-          console.log('Não foi possível resgatar foto do destinatario.');
-        });
-      } catch (error) {
-        console.log('Não foi possível resgatar foto do destinatario.');
-      }
-
-      
-
+  const configMessages = (msgs) => {
+    if (!messages) 
+      return msgs;
+    msgs.forEach(ms => {
+      ms['text'] = ms.message;
+      delete ms.message;
+      ms['senderFlag'] = (ms.sender === user.uid) ? true : false;
+      delete ms.sender;
     });
-    return () => {
-      isCancelled = true;
-    };
+    console.log(msgs);
+    return msgs;
+  };
+
+  //console.log("Destinatario ID: " + destinatarioID);
+  // const colorStyle =
+  //   user.uid === pet.userId
+  //     ? styles.infoTitleMeusPets
+  //     : styles.infoTitleAdoption;
+
+  const loadPhoto = async () => {
+    try {
+      const image = storage().ref().child(destinatario.photoFile);
+      // const image = images.child('image1');
+      image.getDownloadURL().then((url) => {
+        setChatPhoto({ uri: url });
+      })
+      .catch(error => {
+        console.log('Não foi possível resgatar foto do destinatario.');
+      });
+    } catch (error) {
+      console.log('Não foi possível resgatar foto do destinatario.');
+    }
+  };
+
+  const loadData = async () => {
+    const response = await getChat(user.uid, destinatario.id);
+    console.log('response: ', response);
+    const data = await response.docs[0]._data.messages;
+    setChat(data);
+    setMessages(configMessages(data));
+
+  };
+
+  useEffect(() => {
+    loadPhoto();
+    loadData();
   }, []);
 
+  /*
   useEffect(() => {
     let isCancelled = false;
-    console.log("uid: " + user.uid);
-    console.log("dest id: " + destinatarioID);
-
+    console.log("uid: ", user.uid);
+    console.log("dest id: ", destinatario);
     // ----------- GET CHAT --------------
-    getChat(user.uid, destinatarioID).then((response) => {
+    getChat(user.uid, destinatario.id).then((response) => {
       console.log("GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT ");
       // response.forEach((chat) => {
         // setChat((oldChat) => [...oldChat, {...chat.data(), id: chat.id}]);
         setChat("chat: "+chat.data());
         setChatID("chat id: "+chat.id);
         console.log(chat.data());
-      // });
-      
-      setTimeout(function(){console.log(chat);
-      // setChat(response.data());
-      setMessages(chat.messages);
-
-      messages.forEach(mensagem => {
-        mensagem.senderFlag = (mensagem.sender == user.uid) ? true : false;
-      });
-      console.log("MENSAGENS: ");
-      console.log(messages);}, 1000);
-    });
-    return () => {
-      isCancelled = true;
-      return (
-        <Text>Erro procurando chats</Text>
-      );
-    };
+        // });
+        
+        setTimeout(function(){
+          console.log(chat);
+          // setChat(response.data());
+          setMessages(chat.messages);
+          
+          messages.forEach(mensagem => {
+            mensagem.senderFlag = (mensagem.sender == user.uid) ? true : false;
+          });
+          console.log("MENSAGENS: ");
+          console.log(messages);}, 1000);
+        });
+        return () => {
+          isCancelled = true;
+          return (
+            <Text>Erro procurando chats</Text>
+            );
+          };
   }, []);
+  */
 
   const sendMessage = (newMessage) => {
     const newMessageObj = { senderFlag: true, text: newMessage };
     setMessages([...messages, newMessageObj]);
     //enviar notificação
-    chatNotification(destinatarioID, user);
+    chatNotification(destinatario.id, user);
   };
 
-  if(chat){
+  if (chat){
+    console.log('messages: ', messages);
     return (
       <View>
         <View>
           <SmallImage source={chatPhoto.uri} /> 
           <Text>{destinatario.name}</Text> 
         </View>
-  
-        <SimpleChat
+        {messages ? (<SimpleChat
           data={messages}
           sendButtonText="Enviar"
           onPressSendButton={sendMessage}
-        />
-  
+        />) : null}
       </View>
     );
   } else {

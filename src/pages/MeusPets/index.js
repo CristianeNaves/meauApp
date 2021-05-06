@@ -113,7 +113,6 @@ export default function MeusPets({navigation}) {
   }, []);
 
 
-
   return (
     <View>
       <Text>Meus Pets Page</Text>

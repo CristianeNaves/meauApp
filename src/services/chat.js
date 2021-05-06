@@ -69,14 +69,19 @@ const remove = async (chatId) => {
 };
 
 const getChat = async (userA, userB) => {
-  const chat = await firestore()
+  console.log('userA: ', userA);
+  console.log('userB: ', userB);
+  let chat = await firestore()
     .collection('chats')
-    // .where(userA, 'in', 'users')
+    //.where(userA, 'in', 'users')
     // .where(userB, 'in', 'users')
-    // .where('users', 'array-contains-any', [userA, userB])
-    .where('users', 'array-contains-any', [userA])
-    .where('users', 'array-contains-any', [userB])
-    .limit(1)
+    .where('users', 'array-contains-any', [userA, userB])
+
+    //.where('users', 'array-contains-any', [userA])
+    //.where('users', 'array-contains-any', [userB])
+    //.limit(1)
+    //.where('users.uid1' === 0)
+    //.where('users.uid2' === 1)
     .get();
   return chat;
 };
