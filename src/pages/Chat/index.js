@@ -4,7 +4,7 @@ import {View, Text, Alert} from 'react-native';
 import styles from './style';
 import AuthContext from '../../contexts/auth';
 import {remove, sentAdoptionIntention} from '../../services/pet';
-import {getChat} from '../../services/chat';
+import {getChat, update} from '../../services/chat';
 import {get} from '../../services/user';
 import {SmallImage} from '../../components/Image';
 
@@ -16,49 +16,51 @@ import {chatNotification} from '../../services/notifications';
 const arr = [
   {
     senderFlag: true,
-    text: 'hello',
+    text: 'Carregando',
   },
   {
     senderFlag: false,
-    text: 'teste',
+    text: 'chat...',
   },
 ];
 
 export default function Chat({navigation, route}) {
   const {user} = useContext(AuthContext);
+  const OCHAT = route.params ? route.params : {};
+  const destinatario = OCHAT ? ((OCHAT.users[0] == user.uid)?OCHAT.users[1]:OCHAT.users[0]) : {};
+
+  const mensagensTam = 0;
+
   const [chat, setChat] = useState();
   const [chatID, setChatID] = useState();
-  const destinatario = route.params ? route.params : {};
-  console.log('dest: ', destinatario);
+  
   const [messages, setMessages] = React.useState();
   const [chatPhoto, setChatPhoto] = useState({
     uri:
       'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
   });
 
+
+  // Tratamento de mensagens vindas do banco
   const configMessages = (msgs) => {
+    mensagensTam = msgs.length;
     if (!messages) 
       return msgs;
     msgs.forEach(ms => {
-      ms['text'] = ms.message;
-      delete ms.message;
+      // ms['text'] = ms.message;
+      // delete ms.message;
+      console.log("sender: "+ms.sender);
       ms['senderFlag'] = (ms.sender === user.uid) ? true : false;
-      delete ms.sender;
+      // delete ms.sender;
     });
-    console.log(msgs);
+    // console.log(msgs);
     return msgs;
   };
 
-  //console.log("Destinatario ID: " + destinatarioID);
-  // const colorStyle =
-  //   user.uid === pet.userId
-  //     ? styles.infoTitleMeusPets
-  //     : styles.infoTitleAdoption;
-
+  // Carrega foto do destinatário
   const loadPhoto = async () => {
     try {
       const image = storage().ref().child(destinatario.photoFile);
-      // const image = images.child('image1');
       image.getDownloadURL().then((url) => {
         setChatPhoto({ uri: url });
       })
@@ -70,13 +72,18 @@ export default function Chat({navigation, route}) {
     }
   };
 
+  // Carrega o chat vindo do banco de dados
   const loadData = async () => {
-    const response = await getChat(user.uid, destinatario.id);
-    console.log('response: ', response);
-    const data = await response.docs[0]._data.messages;
-    setChat(data);
-    setMessages(configMessages(data));
-
+    setChat(OCHAT);
+    // console.log("chat: "+chat);
+    setMessages(configMessages(OCHAT.messages));
+    // getChat(user.uid, destinatario.id).then((retorno) => {
+    //   console.log('getChat() retorno: ', retorno);
+    //   // const data = await retorno.docs[0]._data.messages;
+    //   setChat(retorno);
+    //   console.log(chat);
+    //   setMessages(configMessages(retorno.messages));
+    // });
   };
 
   useEffect(() => {
@@ -84,65 +91,37 @@ export default function Chat({navigation, route}) {
     loadData();
   }, []);
 
-  /*
-  useEffect(() => {
-    let isCancelled = false;
-    console.log("uid: ", user.uid);
-    console.log("dest id: ", destinatario);
-    // ----------- GET CHAT --------------
-    getChat(user.uid, destinatario.id).then((response) => {
-      console.log("GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT GETCHAT ");
-      // response.forEach((chat) => {
-        // setChat((oldChat) => [...oldChat, {...chat.data(), id: chat.id}]);
-        setChat("chat: "+chat.data());
-        setChatID("chat id: "+chat.id);
-        console.log(chat.data());
-        // });
-        
-        setTimeout(function(){
-          console.log(chat);
-          // setChat(response.data());
-          setMessages(chat.messages);
-          
-          messages.forEach(mensagem => {
-            mensagem.senderFlag = (mensagem.sender == user.uid) ? true : false;
-          });
-          console.log("MENSAGENS: ");
-          console.log(messages);}, 1000);
-        });
-        return () => {
-          isCancelled = true;
-          return (
-            <Text>Erro procurando chats</Text>
-            );
-          };
-  }, []);
-  */
+  // setInterval(function(){
+  //   getChat(OCHAT.users[0], OCHAT.users[1]).then((response) => {
+  //     console.log(response);
+  //   }); 
+
+  //   // console.log("atualizei o chat");
+  // }, 2000);
 
   const sendMessage = (newMessage) => {
     const newMessageObj = { senderFlag: true, text: newMessage };
     setMessages([...messages, newMessageObj]);
+
+    chat.messages.push({sender: user.uid, text: newMessage});
+    update(chat.id, chat);
+
     //enviar notificação
-    chatNotification(destinatario.id, user);
+    chatNotification(destinatario.id, user.uid);
   };
 
-  if (chat){
-    console.log('messages: ', messages);
-    return (
+  return (
+    <View>
       <View>
-        <View>
-          <SmallImage source={chatPhoto.uri} /> 
-          <Text>{destinatario.name}</Text> 
-        </View>
-        {messages ? (<SimpleChat
-          data={messages}
-          sendButtonText="Enviar"
-          onPressSendButton={sendMessage}
-        />) : null}
+        <SmallImage source={chatPhoto.uri} /> 
+        <Text>{destinatario.name}</Text> 
       </View>
-    );
-  } else {
-    return null;
-  }
+      {messages ? (<SimpleChat
+        data={messages}
+        sendButtonText="Enviar"
+        onPressSendButton={sendMessage}
+      />) : null}
+    </View>
+  );
   
 }

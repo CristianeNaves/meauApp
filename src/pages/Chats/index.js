@@ -13,7 +13,7 @@ import { Alert } from 'react-native';
 import {adoptionConfirmNotification, adoptionNegationNotification} from '../../services/notifications';
 
 const ChatItem = ({navigation, conversa}) => {
-  console.log('conversa: ', conversa);
+  console.log('CHATS: conversa: ', conversa);
   const [chat, setChat] = useState(conversa);
   const {user} = useContext(AuthContext);
   const destinatarioID = (conversa.users[0] === user.uid) ? conversa.users[1] : conversa.users[0];
@@ -65,7 +65,8 @@ const ChatItem = ({navigation, conversa}) => {
     return (
       <Card
         style={{marginBottom: 12}}
-        onPress={() => navigation.navigate('Chat', {...destinatario, id: destinatarioID})}>
+        // onPress={() => navigation.navigate('Chat', {...destinatario, id: destinatarioID})}>
+        onPress={() => navigation.navigate('Chat', conversa)}>
         <Card.Title
           title={destinatario.name}
           style={{backgroundColor: '#cfe9e5'}}

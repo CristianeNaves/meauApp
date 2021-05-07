@@ -56,6 +56,7 @@ const InteressadoItem = ({navigation, interessado, pet, user}) => {
       style={{marginBottom: 12}}
       onPress={() => {
             //if((chats.length == 0) && (chatVazio)) newChat(user.uid, interessado.id);
+            // newChat(user.uid, interessado.id);
             navigation.navigate('Chat', interessado);
           }
         }

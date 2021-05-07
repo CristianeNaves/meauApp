@@ -35,8 +35,8 @@ const adoptionNegationNotification = (pet, receiver, sender) => {
 
 const chatNotification = (receiver, sender) => {
   const notification = {
-    receiver: receiver.id,
-    sender: sender.uid,
+    receiver: receiver,
+    sender: sender,
     type: 'chatNotification',
   };
 

@@ -29,7 +29,7 @@ const getAll = async (chatId) => {
 
 const newChat = (userA, userB) => {
   const novochat = {
-    messages: [],
+    messages: [{message: "Lembre-se de ser educado.", sender:"server"}],
     users: [userA, userB],
   };
 
@@ -69,21 +69,31 @@ const remove = async (chatId) => {
 };
 
 const getChat = async (userA, userB) => {
-  console.log('userA: ', userA);
-  console.log('userB: ', userB);
+  // console.log('userA: ', userA);
+  // console.log('userB: ', userB);
   let chat = await firestore()
     .collection('chats')
     //.where(userA, 'in', 'users')
-    // .where(userB, 'in', 'users')
+    //.where(userB, 'in', 'users')
     .where('users', 'array-contains-any', [userA, userB])
-
-    //.where('users', 'array-contains-any', [userA])
-    //.where('users', 'array-contains-any', [userB])
-    //.limit(1)
-    //.where('users.uid1' === 0)
-    //.where('users.uid2' === 1)
     .get();
-  return chat;
+
+  let encontrouChat = false;
+  var oChat;
+  chat.forEach(c => {
+    const conversa = c._data;
+    if( ((conversa.users[0] == userA) && (conversa.users[1] == userB)) || ((conversa.users[1] == userA) && (conversa.users[0] == userB)) ){
+      encontrouChat = true;
+      // return conversa;
+      oChat = c._data;
+      return oChat;
+    }
+  })
+  setTimeout(function() {
+    if (oChat) return oChat;
+    if(!encontrouChat) return null
+  }, 200);
+  // return null;
 };
 
 const getChats = async (user) => {
