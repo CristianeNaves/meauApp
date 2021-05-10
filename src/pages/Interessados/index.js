@@ -54,10 +54,13 @@ const InteressadoItem = ({navigation, interessado, pet, user}) => {
   return (
     <Card
       style={{marginBottom: 12}}
-      onPress={() => {
-            //if((chats.length == 0) && (chatVazio)) newChat(user.uid, interessado.id);
-            // newChat(user.uid, interessado.id);
-            navigation.navigate('Chat', interessado);
+      onPress={async () => {
+            let chatInteressado = await getChat(user.uid, interessado.id);
+            if (!chatInteressado){
+              newChat(user.uid, interessado.id);
+            }
+            chatInteressado = await getChat(user.uid, interessado.id);
+            navigation.navigate('Chat', chatInteressado);
           }
         }
       >

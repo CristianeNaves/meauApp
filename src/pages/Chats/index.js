@@ -36,7 +36,7 @@ const ChatItem = ({navigation, conversa}) => {
   };
   const loadData = async () => {
     const request = await get(destinatarioID);
-    const data = await request.data();
+    const data = await request._data;
     console.log('data: ', data);
     setDestinatario(data);
   };

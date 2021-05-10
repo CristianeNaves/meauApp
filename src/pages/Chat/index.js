@@ -29,7 +29,7 @@ export default function Chat({navigation, route}) {
   const OCHAT = route.params ? route.params : {};
   const destinatario = OCHAT ? ((OCHAT.users[0] == user.uid)?OCHAT.users[1]:OCHAT.users[0]) : {};
 
-  const mensagensTam = 0;
+  let mensagensTam = 0;
 
   const [chat, setChat] = useState();
   const [chatID, setChatID] = useState();
@@ -49,7 +49,7 @@ export default function Chat({navigation, route}) {
     msgs.forEach(ms => {
       // ms['text'] = ms.message;
       // delete ms.message;
-      console.log("sender: "+ms.sender);
+      // console.log("sender: "+ms.sender);
       ms['senderFlag'] = (ms.sender === user.uid) ? true : false;
       // delete ms.sender;
     });
@@ -59,16 +59,19 @@ export default function Chat({navigation, route}) {
 
   // Carrega foto do destinatário
   const loadPhoto = async () => {
+    let perfilDestinatario = await get(destinatario);
+    perfilDestinatario = perfilDestinatario._data;
+    console.log(perfilDestinatario);
     try {
-      const image = storage().ref().child(destinatario.photoFile);
+      const image = storage().ref().child(perfilDestinatario.photoFile);
       image.getDownloadURL().then((url) => {
         setChatPhoto({ uri: url });
       })
       .catch(error => {
-        console.log('Não foi possível resgatar foto do destinatario.');
+        console.log('Não foi possível resgatar foto do destinatario.' + error);
       });
     } catch (error) {
-      console.log('Não foi possível resgatar foto do destinatario.');
+      console.log('Não foi possível resgatar foto do destinatario.' + error);
     }
   };
 
@@ -91,13 +94,24 @@ export default function Chat({navigation, route}) {
     loadData();
   }, []);
 
-  // setInterval(function(){
-  //   getChat(OCHAT.users[0], OCHAT.users[1]).then((response) => {
-  //     console.log(response);
-  //   }); 
+  let atualizandoChat = false;
+  const atualizacao = setInterval(() => {
+    if(!atualizandoChat){
+      atualizandoChat = true;
+      getChat(OCHAT.users[0], OCHAT.users[1]).then((response) => {
+        console.log(response);
+        if(response.messages.length > mensagensTam) setMessages(configMessages(response.messages));
+        atualizandoChat = false;
+      }); 
+    }
 
-  //   // console.log("atualizei o chat");
-  // }, 2000);
+    // console.log("atualizei o chat");
+  }, 10000);
+  // clearInterval(atualizacao);
+
+  const sairDaPagina = navigation.addListener('blur', () => {
+    clearInterval(atualizacao);
+  });
 
   const sendMessage = (newMessage) => {
     const newMessageObj = { senderFlag: true, text: newMessage };
@@ -116,11 +130,11 @@ export default function Chat({navigation, route}) {
         <SmallImage source={chatPhoto.uri} /> 
         <Text>{destinatario.name}</Text> 
       </View>
-      {messages ? (<SimpleChat
+      <SimpleChat
         data={messages}
         sendButtonText="Enviar"
         onPressSendButton={sendMessage}
-      />) : null}
+      />
     </View>
   );
   

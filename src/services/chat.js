@@ -78,22 +78,15 @@ const getChat = async (userA, userB) => {
     .where('users', 'array-contains-any', [userA, userB])
     .get();
 
-  let encontrouChat = false;
-  var oChat;
+  let oChat;
   chat.forEach(c => {
-    const conversa = c._data;
-    if( ((conversa.users[0] == userA) && (conversa.users[1] == userB)) || ((conversa.users[1] == userA) && (conversa.users[0] == userB)) ){
-      encontrouChat = true;
-      // return conversa;
+    const conv = c._data;
+    if( ((conv.users[0] == userA) && (conv.users[1] == userB)) || ((conv.users[1] == userA) && (conv.users[0] == userB)) ){
       oChat = c._data;
-      return oChat;
     }
   })
-  setTimeout(function() {
-    if (oChat) return oChat;
-    if(!encontrouChat) return null
-  }, 200);
-  // return null;
+  return oChat;
+  
 };
 
 const getChats = async (user) => {
