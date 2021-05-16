@@ -1,9 +1,8 @@
 import React, {useContext, useState} from 'react';
 import {View} from 'react-native';
-import {LargeButton} from '../../components/Button';
-import styles from '../../components/Button/styles';
-import {TextInputField} from '../../components/Field';
 import AuthContext from '../../contexts/auth';
+import {Input} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 
 export default function Login({navigation}) {
   const [user, setUser] = useState({});
@@ -11,21 +10,25 @@ export default function Login({navigation}) {
 
   return (
     <View>
-      <TextInputField
-        placeholder="Email de usuário"
-        onChange={(email) => setUser({...user, email})}
+      <View style={{marginTop: 64}} />
+      <Input
+        placeholder="E-mail do usuário"
+        onChangeText={(email) => setUser({...user, email})}
       />
-      <TextInputField
-        placeholder="Senha"
-        onChange={(password) => setUser({...user, password})}
+      <Input
+        placeholder="Password"
+        secureTextEntry={true}
+        onChangeText={(password) => setUser({...user, password})}
       />
-      <LargeButton
-        title="Entrar"
-        style={styles.blueButton}
-        onPress={() => logIn(user.email, user.password)}
-      />
-      <LargeButton title="Entrar com facebook" style={styles.facebookButton} />
-      <LargeButton title="Entrar com google" style={styles.gmailButton} />
+      <View style={{marginTop: 52}} />
+      <View style={{display: 'flex', alignItems: 'center'}}>
+        <Button
+          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
+          buttonStyle={{width: 232, height: 50, backgroundColor: '#88c9bf'}}
+          onPress={() => logIn(user.email, user.password)}
+          title="ENTRAR"
+        />
+      </View>
     </View>
   );
 }
