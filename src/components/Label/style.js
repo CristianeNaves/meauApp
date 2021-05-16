@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   fieldTitle: {
-    color: '#f7a800',
     fontSize: 12,
     textTransform: 'uppercase',
   },
