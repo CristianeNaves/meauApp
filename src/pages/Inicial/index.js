@@ -1,30 +1,62 @@
-import React, {useState, useContext} from 'react';
-import {View, Text, ViewPropTypes, Image} from 'react-native';
-import {LeftedContainer} from '../../styles/container';
+/* eslint-disable prettier/prettier */
+import React, {useContext} from 'react';
+import {View, Text} from 'react-native';
 import {LargeButton} from '../../components/Button';
-import {Label} from '../../components/Label';
-import { mockLogin } from '../../services/auth';
+import {Button, Image} from 'react-native-elements';
 import AuthContext from '../../contexts/auth';
-import styles from './style';
+import image from '../../assets/Meau_marca_2.png';
 
 export default function Inicial( {navigation} ) {
-    const { signed } = useContext(AuthContext);
+  const { signed } = useContext(AuthContext);
 
-    async function handleSignIn() {
-        const response = await mockLogin();
-        console.log(response);
-    }
+  return (
+    <View>
+      <Text
+        style={{
+          fontSize: 72,
+          color: '#ffd358',
+          textAlign: 'center',
+          marginBottom: 52,
+          marginTop: 54,
+        }}>
+        Olá!
+      </Text>
+      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>Bem-vindo ao Meau!</Text>
+      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>Aqui você pode adotar e doar cães e gatos com facilidade.</Text>
+      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>Qual o seu interesse?</Text>
 
-    return (
-        <View>
-            <Label label="Olá!"></Label>
-            <Label label="Bem-vindo ao Meau!"></Label>
-            <Label label="Aqui você pode adotar e doar cães e gatos com facilidade."></Label>
-            <Label label="Qual o seu interesse?"></Label>
-            <LargeButton title="Adotar" onPress={() => navigation.navigate('Oops')} />
-            <LargeButton title="Cadastrar Animal" onPress={() => navigation.navigate('Oops')} />
-            <LargeButton title="Fazer Login" onPress={() => navigation.navigate('Login')} />
-        </View>
-    );
+      <View style={{display: 'flex', alignItems: 'center', marginTop: 48}}>
+        <Button
+          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
+          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+          onPress={() => navigation.navigate('Oops')}
+          title="ADOTAR"
+        />
+      </View>
+
+      <View style={{display: 'flex', alignItems: 'center', marginTop: 12}}>
+        <Button
+          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
+          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+          onPress={() => navigation.navigate('Oops')}
+          title="CADASTRAR ANIMAL"
+        />
+      </View>
+      <View style={{marginTop: 44, marginBottom: 68}}>
+        <Button
+          title="login"
+          type="clear"
+          titleStyle={{color: '#88c9bf', fontSize: 16}}
+          onPress={() => navigation.navigate('Login')}
+        />
+      </View>
+      <View style={{alignItems: 'center'}}>
+        <Image
+          source={{ uri: Image.resolveAssetSource(image).uri }}
+          style={{ width: 122, height: 44}}
+        />
+      </View>
+    </View>
+  );
 }
 
