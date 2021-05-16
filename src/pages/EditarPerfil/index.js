@@ -2,13 +2,11 @@ import React, {useState, useContext} from 'react';
 import {View} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {TextInputField} from '../../components/Field';
-import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
-
-import { update } from '../../services/user';
+import {Button} from 'react-native-elements';
+import {update} from '../../services/user';
 
 export default function EditarPerfil({navigation}) {
-  const {register} = useContext(AuthContext);
   const {user} = useContext(AuthContext);
 
   const [name, setName] = useState(user.name);
@@ -22,7 +20,7 @@ export default function EditarPerfil({navigation}) {
 
   return (
     <View>
-      <Label label="Informações pessoais" />
+      <Label color="#589b9b" label="Informações pessoais" />
 
       <TextInputField
         placeholder="Nome completo"
@@ -61,7 +59,7 @@ export default function EditarPerfil({navigation}) {
         onChange={(value) => setTelephone(value)}
       />
 
-      <Label label="Informações de Perfil" />
+      <Label color="#589b9b" label="Informações de perfil" />
 
       <TextInputField
         placeholder="Nome de Usuário"
@@ -69,11 +67,15 @@ export default function EditarPerfil({navigation}) {
         onChange={(value) => setLoginName(value)}
       />
 
-      <LargeButton
-        title="Confirmar"
-        onPress={() => update(user.uid, user)}
-      />
-      
+      <View style={{display: 'flex', alignItems: 'center', marginTop: 32, marginBottom: 24}}>
+        <Button
+          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
+          buttonStyle={{width: 232, height: 50, backgroundColor: '#88c9bf'}}
+          onPress={() => update(user.uid, user)}
+          title="CONFIRMAR"
+        />
+      </View>
+
     </View>
   );
 }
