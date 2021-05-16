@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Image, Alert} from 'react-native';
 import styles from './style';
-import {Button} from 'react-native-paper';
+import {Button} from 'react-native-elements';
 import {LargeButton} from '../../components/Button';
 import {LargeImage} from '../../components/Image';
 import AuthContext from '../../contexts/auth';
@@ -60,11 +60,11 @@ export default function Pet({route, navigation}) {
 
   return (
     <View>
-      <View>
+      <View style={{alignItems: 'center'}}>
         <LargeImage source={petPhoto.uri} />
       </View>
 
-      <View>
+      <View style={{marginTop: 16}}>
         <Text style={styles.title}>{pet.petName}</Text>
       </View>
 
@@ -137,52 +137,50 @@ export default function Pet({route, navigation}) {
       </View>
 
       {user.uid === pet.userId ? (
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginBottom: 28,
+            marginTop: 28,
+          }}>
           <Button
-            mode="contained"
-            color="#88c9bf"
-            labelStyle={{
-              color: '#757575',
-              fontFamily: 'Roboto Medium',
-              fontSize: 12,
+            title="INTERESSADOS"
+            titleStyle={{color: '#757575'}}
+            buttonStyle={{
+              width: 148,
+              height: 50,
+              backgroundColor: '#88c9bf',
+              marginRight: 16,
             }}
             onPress={() => {
               if (pet.intentios != null && pet.intentios.length > 0)
                 navigation.navigate('Interessados', pet);
               else Alert.alert('Não há interessados na adoção ainda.');
-            }}>
-            Interessados
-          </Button>
-          <Button
-            mode="contained"
-            color="#88c9bf"
-            labelStyle={{
-              color: '#757575',
-              fontFamily: 'Roboto Medium',
-              fontSize: 12,
             }}
+          />
+          <Button
+            title="REMOVER PET"
+            titleStyle={{color: '#757575'}}
+            buttonStyle={{width: 148, height: 50, backgroundColor: '#88c9bf'}}
             onPress={() => {
               remove(pet.id).then(() => {
                 navigation.navigate('Remover pet', {name: pet.petName});
               });
-            }}>
-            Remover Pet
-          </Button>
+            }}
+          />
         </View>
       ) : (
-        <Button
-          mode="contained"
-          labelStyle={{
-            color: '#434343',
-            fontSize: 12,
-            fontFamily: 'Roboto Medium',
-          }}
-          color="#fdcf58"
-          onPress={() => {
-            sentAdoptionIntention(pet, user);
-          }}>
-          Pretendo Adotar
-        </Button>
+        <View style={{alignItems: 'center', marginBottom: 28, marginTop: 28}}>
+          <Button
+            title="PRETENDO ADOTAR"
+            titleStyle={{color: '#434343'}}
+            buttonStyle={{width: 232, height: 50, backgroundColor: '#fdcf58'}}
+            onPress={() => {
+              sentAdoptionIntention(pet, user);
+            }}
+          />
+        </View>
       )}
     </View>
   );
