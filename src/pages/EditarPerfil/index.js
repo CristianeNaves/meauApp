@@ -6,6 +6,7 @@ import {LargeButton} from '../../components/Button';
 import {Label} from '../../components/Label';
 
 import { update } from '../../services/user';
+import { Alert } from 'react-native';
 
 export default function EditarPerfil({navigation}) {
   const {register} = useContext(AuthContext);
@@ -71,7 +72,23 @@ export default function EditarPerfil({navigation}) {
 
       <LargeButton
         title="Confirmar"
-        onPress={() => update(user.uid, user)}
+        onPress={() => {
+          newUser = {
+                    address: address, 
+                    age: age,
+                    city: city,
+                    email: user.email,
+                    loginName: loginName,
+                    name: name,
+                    photoFile: user.photoFile,
+                    state: state,
+                    telephone: telephone,
+                    uid: user.uid
+                  };
+          update(user.uid, newUser).then((retorno) =>{
+            Alert("Usuário atualizado");
+            console.log(retorno);
+        })}}
       />
       
     </View>

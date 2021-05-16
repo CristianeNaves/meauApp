@@ -29,7 +29,7 @@ const getAll = async (chatId) => {
 
 const newChat = (userA, userB) => {
   const novochat = {
-    messages: [],
+    messages: [{message: "Lembre-se de ser educado.", sender:"server"}],
     users: [userA, userB],
   };
 
@@ -69,13 +69,24 @@ const remove = async (chatId) => {
 };
 
 const getChat = async (userA, userB) => {
-  const chat = await firestore()
+  // console.log('userA: ', userA);
+  // console.log('userB: ', userB);
+  let chat = await firestore()
     .collection('chats')
-    // .where(userA, 'in', 'users')
-    // .where(userB, 'in', 'users')
+    //.where(userA, 'in', 'users')
+    //.where(userB, 'in', 'users')
     .where('users', 'array-contains-any', [userA, userB])
     .get();
-  return chat;
+
+  let oChat;
+  chat.forEach(c => {
+    const conv = c._data;
+    if( ((conv.users[0] == userA) && (conv.users[1] == userB)) || ((conv.users[1] == userA) && (conv.users[0] == userB)) ){
+      oChat = c._data;
+    }
+  })
+  return oChat;
+  
 };
 
 const getChats = async (user) => {

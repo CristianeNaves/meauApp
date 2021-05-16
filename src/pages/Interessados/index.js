@@ -17,48 +17,53 @@ const InteressadoItem = ({navigation, interessado, pet, user}) => {
 
   const [interessadoPhoto, setInteressadoPhoto] = useState({uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU'});
   const [chats, setChats] = useState([]);
+  let chatVazio = true;
 
-  try {
-    const image = storage().ref().child(interessado.photoFile);
-    // const image = images.child('image1');
-    image.getDownloadURL().then((url) => {
-      setInteressadoPhoto({ uri: url });
-    })
-    .catch(error => {
+  const loadPhoto = async () => {
+    try {
+      const image = storage().ref().child(interessado.photoFile);
+      // const image = images.child('image1');
+      image.getDownloadURL().then((url) => {
+        setInteressadoPhoto({ uri: url });
+      })
+      .catch(error => {
+        console.log('Não foi possível resgatar foto do interessado.');
+      });
+    } catch (error) {
       console.log('Não foi possível resgatar foto do interessado.');
+    }
+  };
+
+  const loadData = async () => {
+    const request = await getChat(user.uid, interessado.id);
+    const data = await request.docs;
+    data.forEach((chat) => {
+      if (chat.data()) {
+        chatVazio = false;
+      }
     });
-  } catch (error) {
-    console.log('Não foi possível resgatar foto do interessado.');
-  }
+    console.log('data: ', data);
+    setChats(data);
+  };
+
+  useEffect(() => {
+    loadPhoto();
+    //loadData();
+  }, []);
 
   return (
     <Card
       style={{marginBottom: 12}}
-      onPress={() => {
-        console.log(getChat(user.uid, interessado.id));
-        let chatVazio = true;
-        getChat(user.uid, interessado.id).then((conversas) => {
-          conversas.forEach((chat) => {
-              setChats((oldChats) => [...oldChats, {...chat.data(), id: chat.id}]);
-              console.log(chat.data());
-              if(chat.data()) chatVazio = false;
-          });
-    
-          setTimeout(function(){ 
-            console.log(chats);
-            console.log(chatVazio);
-            console.log("chats length: " + chats.length);
-            if((chats.length == 0) && (chatVazio)) newChat(user.uid, interessado.id);
-            // if((chats.length == 0) && (chatVazio)) console.log("criaria um novo chat");
-
-            console.log("navegando Chat");
-            navigation.navigate('Chat', interessado);
-          }, 1000);
-        });
-
-        
-        
-      }}>
+      onPress={async () => {
+            let chatInteressado = await getChat(user.uid, interessado.id);
+            if (!chatInteressado){
+              newChat(user.uid, interessado.id);
+            }
+            chatInteressado = await getChat(user.uid, interessado.id);
+            navigation.navigate('Chat', chatInteressado);
+          }
+        }
+      >
       <Card.Title
         title={interessado.name}
         style={{backgroundColor: '#cfe9e5'}}
@@ -118,8 +123,15 @@ export default function Interessados({navigation, route}) {
   const {user} = useContext(AuthContext);
   const [interessados, setInteressados] = useState([]);
 
-  // console.log(route);
+  const loadData = async () => {
+    const response = await getInteressados(route.params);
+    const data = await response.docs;
+    setInteressados(data);
+  };
+
   useEffect(() => {
+    loadData();
+    /*
     let isCancelled = false;
     getInteressados(route.params).then((intentions) => {
       intentions.forEach((interessado) => {
@@ -131,13 +143,15 @@ export default function Interessados({navigation, route}) {
     });
     return () => {
       isCancelled = true;
-    };
+    };*/
   }, []);
-
+  console.log(interessados[0]);
   return (
     <View>
       {interessados.map((interessado) => (
-        <InteressadoItem navigation={navigation} interessado={interessado} pet={route.params} user={user} />
+        <View key={interessado.id}>
+          <InteressadoItem navigation={navigation} interessado={{...interessado.data(), id: interessado.id}} pet={route.params} user={user} />
+        </View>
       ))}
     </View>
   );
