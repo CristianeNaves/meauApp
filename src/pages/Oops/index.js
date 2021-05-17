@@ -12,7 +12,7 @@ export default function Oops({navigation}) {
       <Text
         style={{
           fontSize: 53,
-          fontFamily: 'Courgette Regular',
+          fontFamily: 'Courgette-Regular',
           color: '#88c9bf',
           marginBottom: 52,
           marginTop: 52,

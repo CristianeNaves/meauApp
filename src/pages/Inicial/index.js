@@ -18,6 +18,7 @@ export default function Inicial( {navigation} ) {
           textAlign: 'center',
           marginBottom: 52,
           marginTop: 54,
+          fontFamily: 'Courgette-Regular'
         }}>
         Olá!
       </Text>
