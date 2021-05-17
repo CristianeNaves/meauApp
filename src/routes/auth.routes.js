@@ -61,10 +61,10 @@ const AuthStack = createStackNavigator();
 export default function AuthRoutes() {
     return (
         <AuthStack.Navigator>
-            <AuthStack.Screen name="Inicial" component={InicialScreen} />
-            <AuthStack.Screen name="Oops" component={OopsScreen} />
-            <AuthStack.Screen name="Login" component={LoginScreen} />
-            <AuthStack.Screen name="Cadastro" component={UsrRegisterScreen} />
+            <AuthStack.Screen name="Inicial" component={InicialScreen} options={{headerStyle: {backgroundColor: '#fee29b'}, headerTitleStyle: {color: '#434343'}}} />
+            <AuthStack.Screen name="Oops" component={OopsScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
+            <AuthStack.Screen name="Login" component={LoginScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
+            <AuthStack.Screen name="Cadastro" component={UsrRegisterScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
         </AuthStack.Navigator>
     );
 }
