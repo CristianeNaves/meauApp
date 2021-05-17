@@ -19,7 +19,7 @@ const LargeButton = ({title, onPress, color}) => {
 const SmallButton = ({title, onPress, type}) => {
   return (
     <View>
-      <Button title={title} style={styles.smallButton} onPress={onPress}/>
+      <Button title={title} style={styles.smallButton} onPress={onPress} />
     </View>
   );
 };
