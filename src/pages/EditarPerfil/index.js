@@ -73,7 +73,7 @@ export default function EditarPerfil({navigation}) {
       <LargeButton
         title="Confirmar"
         onPress={() => {
-          newUser = {
+          const newUser = {
                     address: address, 
                     age: age,
                     city: city,
@@ -86,7 +86,7 @@ export default function EditarPerfil({navigation}) {
                     uid: user.uid
                   };
           update(user.uid, newUser).then((retorno) =>{
-            Alert("Usuário atualizado");
+            Alert.alert("Usuário atualizado");
             console.log(retorno);
         })}}
       />
