@@ -1,9 +1,10 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react'
-import {View, Image, Alert, SafeAreaView, TouchableOpacity, Text} from 'react-native';
+import {View, Alert} from 'react-native';
 
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
-import { SmallButton } from '../Button';
+import {Button} from 'react-native-elements';
 
 import styles from './styles';
 import { LargeImage } from '../Image';
@@ -16,9 +17,9 @@ export default function ImageSelection({photo, onImagePicked}){
   useEffect(() => {
     if (photo) {
       console.log("useEffect: " + photo);
-      setSelectedImage({ uri: photo });
+      //setSelectedImage({ uri: photo });
     }
-  }, [photo])
+  }, [photo]);
 
   const selectImage = () => {
     console.log("selectImage");
@@ -75,39 +76,24 @@ export default function ImageSelection({photo, onImagePicked}){
     );
     setImage(null);
   };
-  
 
   return (
     <View>
-      {/* <Image source="" /> */}
-      {image !== null ? (
-          // <Image style={styles.imageBox} source={ image }  />
+      {image.uri ? (
+        <View style={{alignItems: 'center'}}>
           <LargeImage source={image.uri} />
-         ) : null}
-      <SmallButton title="Escolher foto" onPress={selectImage} />
+        </View>
+      ) : null}
+      <View style={{alignItems: 'center', marginBottom: 20, marginTop: 16}}>
+        <Button
+          titleStyle={{color: '#757575', fontFamily: 'Roboto Regular'}}
+          buttonStyle={{width: 312, height: 60, backgroundColor: '#e1e2e2'}}
+          title="adicionar foto"
+          onPress={selectImage}
+        />
+      </View>
       {/* <SmallButton title="Upload foto" onPress={uploadImage} /> */}
     </View>
   );
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.selectButton} onPress={selectImage}>
-        <Text style={styles.buttonText}>Pick an image</Text>
-      </TouchableOpacity>
-      <View style={styles.imageContainer}>
-        {image !== null ? (
-          <Image source={{ uri: image.uri }} style={styles.imageBox} />
-        ) : null}
-        {uploading ? (
-          <View style={styles.progressBarContainer}>
-            <Progress.Bar progress={transferred} width={300} />
-          </View>
-        ) : (
-          <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
-            <Text style={styles.buttonText}>Upload image</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </SafeAreaView>
-  );
 }

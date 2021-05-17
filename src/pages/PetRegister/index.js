@@ -6,27 +6,41 @@ import {
   RadioButtonField,
   TextInputField,
 } from '../../components/Field';
-import {LargeButton} from '../../components/Button';
 import AuthContext from '../../contexts/auth';
 import {create} from '../../services/pet';
 
 import ImageSelection from '../../components/ImageSelection';
 import storage from '@react-native-firebase/storage';
+import {Button} from 'react-native-elements';
 
 const PetCreated = ({navigation}) => {
   return (
     <View>
-      <Text>Eba!</Text>
-      <Text>O cadastro do seu pet foi realizado com sucesso!</Text>
-      <Text>
-        Certifique-se que permitiu o envio de notificações por push no campo
-        privacidade do menu configurações do aplicativo. Assim, poderemos te
-        assim que alguém interessado entrar em contato!
+      <Text style={{textAlign: 'center', fontSize: 53, color: '#ffd358',marginBottom: 52, marginTop: 52}}>
+        Eba!
       </Text>
-      <LargeButton
-        title="Meus Pets"
-        onPress={() => navigation.navigate('MeusPets')}
-      />
+      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>
+        O cadastro do seu pet foi realizado com sucesso!
+      </Text>
+
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginTop: 32,
+          marginBottom: 24,
+        }}>
+        <Button
+          titleStyle={{
+            color: '#434343',
+            fontFamily: 'Roboto Regular',
+            textTransform: 'uppercase',
+          }}
+          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+          onPress={() => navigation.navigate('MeusPets')}
+          title="confirmar"
+        />
+      </View>
     </View>
   );
 };
@@ -133,36 +147,56 @@ const PetForm = ({user, setCreated}) => {
         label="Nome do animal"
         onChange={(value) => setPetName(value)}
       />
+      <Text
+        style={{
+          fontSize: 12,
+          color: '#f7a800',
+          textTransform: 'uppercase',
+          marginBottom: 16,
+        }}>
+        Foto do Animal
+      </Text>
+      <ImageSelection image={petPhoto} onImagePicked={setPetPhoto} />
       <RadioButtonField
         selected={especie}
         setSelected={setEspecie}
         options={['Gato', 'Cachorro']}
+        width={90}
         title="Espécie"
       />
       <RadioButtonField
         selected={sexo}
         setSelected={setSexo}
         options={['Macho', 'Fêmea']}
+        width={90}
         title="Sexo"
       />
       <RadioButtonField
         selected={porte}
         setSelected={setPorte}
         options={['Pequeno', 'Médio', 'Grande']}
+        width={90}
         title="Porte"
       />
       <RadioButtonField
         selected={idade}
         setSelected={setIdade}
         options={['Filhote', 'Adulto', 'Idoso']}
+        width={90}
         title="Idade"
       />
       <CheckBoxField
         options={temperamentos}
+        width={82}
         setOptions={setTemperamentos}
         title="Temperamento"
       />
-      <CheckBoxField options={saude} setOptions={setSaude} title="Saúde" />
+      <CheckBoxField
+        options={saude}
+        setOptions={setSaude}
+        width={90}
+        title="Saúde"
+      />
       <TextInputField
         placeholder="Doenças do animal"
         onChange={(value) => setDoencas(value)}
@@ -186,10 +220,18 @@ const PetForm = ({user, setCreated}) => {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
-
-      <ImageSelection image={petPhoto} onImagePicked={setPetPhoto}/>
-
-      <LargeButton title="Colocar para adoção" onPress={() => createPet()} />
+      <View style={{alignItems: 'center', marginBottom: 24}}>
+        <Button
+          titleStyle={{
+            color: '#434343',
+            fontFamily: 'Roboto Regular',
+            textTransform: 'uppercase',
+          }}
+          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+          title="colocar para adoção"
+          onPress={() => createPet()}
+        />
+      </View>
     </View>
   );
 };
