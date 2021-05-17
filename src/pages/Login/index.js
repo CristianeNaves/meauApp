@@ -1,8 +1,9 @@
 import React, {useContext, useState} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {Input} from 'react-native-elements';
-import {Button} from 'react-native-elements';
+import {LargeButton} from '../../components/Button';
+import styles from '../../components/Image/styles';
 
 export default function Login({navigation}) {
   const [user, setUser] = useState({});
@@ -20,13 +21,12 @@ export default function Login({navigation}) {
         secureTextEntry={true}
         onChangeText={(password) => setUser({...user, password})}
       />
-      <View style={{marginTop: 52}} />
-      <View style={{display: 'flex', alignItems: 'center'}}>
-        <Button
-          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#88c9bf'}}
+
+      <View style={{marginTop: 52}}>
+        <LargeButton
+          title="Entrar"
           onPress={() => logIn(user.email, user.password)}
-          title="ENTRAR"
+          color="#88c9bf"
         />
       </View>
     </View>
