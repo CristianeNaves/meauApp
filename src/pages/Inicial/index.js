@@ -1,60 +1,81 @@
 /* eslint-disable prettier/prettier */
-import React, {useContext} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import {LargeButton} from '../../components/Button';
 import {Button, Image} from 'react-native-elements';
-import AuthContext from '../../contexts/auth';
 import image from '../../assets/Meau_marca_2.png';
 
 export default function Inicial( {navigation} ) {
-  const { signed } = useContext(AuthContext);
+  const styles = StyleSheet.create({
+    h1: {
+      fontSize: 72,
+      color: '#ffd358',
+      textAlign: 'center',
+      marginBottom: 52,
+      marginTop: 54,
+      fontFamily: 'Courgette-Regular',
+    },
+    text: {
+      textAlign: 'center',
+      fontSize: 16,
+      color: '#757575',
+      fontFamily: 'Roboto-Regular',
+    },
+    image: {
+      alignItems: 'center',
+    },
+    imageSize: {
+      width: 122,
+      height: 44,
+    },
+    buttonClear: {
+      marginTop: 44,
+      marginBottom: 68,
+    },
+    buttonTitle: {
+      color: '#88c9bf',
+      fontSize: 16,
+    },
+  });
 
   return (
     <View>
       <Text
-        style={{
-          fontSize: 72,
-          color: '#ffd358',
-          textAlign: 'center',
-          marginBottom: 52,
-          marginTop: 54,
-          fontFamily: 'Courgette-Regular'
-        }}>
+        style={styles.h1}>
         Olá!
       </Text>
-      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>Bem-vindo ao Meau!</Text>
-      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>Aqui você pode adotar e doar cães e gatos com facilidade.</Text>
-      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>Qual o seu interesse?</Text>
+      <Text style={styles.text}>Bem-vindo ao Meau!</Text>
+      <Text style={styles.text}>Aqui você pode adotar e doar cães e gatos com facilidade.</Text>
+      <Text style={styles.text}>Qual o seu interesse?</Text>
 
-      <View style={{display: 'flex', alignItems: 'center', marginTop: 48}}>
-        <Button
-          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+      <View style={{marginTop: 48}}>
+        <LargeButton
+          title="Adotar"
           onPress={() => navigation.navigate('Oops')}
-          title="ADOTAR"
+          color="#ffd358"
+        />
+      </View>
+      <View style={{marginTop: 12}}>
+        <LargeButton
+          title="Cadastrar Animal"
+          onPress={() => navigation.navigate('Oops')}
+          color="#ffd358"
         />
       </View>
 
-      <View style={{display: 'flex', alignItems: 'center', marginTop: 12}}>
-        <Button
-          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
-          onPress={() => navigation.navigate('Oops')}
-          title="CADASTRAR ANIMAL"
-        />
-      </View>
-      <View style={{marginTop: 44, marginBottom: 68}}>
+      <View style={styles.buttonClear}>
         <Button
           title="login"
           type="clear"
-          titleStyle={{color: '#88c9bf', fontSize: 16}}
+          titleStyle={styles.buttonTitle}
           onPress={() => navigation.navigate('Login')}
         />
       </View>
-      <View style={{alignItems: 'center'}}>
+
+      <View style={styles.image}>
         <Image
           source={{ uri: Image.resolveAssetSource(image).uri }}
-          style={{ width: 122, height: 44}}
+          style={styles.imageSize}
         />
       </View>
     </View>
