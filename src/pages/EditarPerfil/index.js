@@ -1,12 +1,17 @@
+/* eslint-disable prettier/prettier */
 import React, {useState, useContext} from 'react';
 import {View} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {TextInputField} from '../../components/Field';
-import {Label} from '../../components/Label';
+import {LargeButton} from '../../components/Button';
 import {Button} from 'react-native-elements';
-import {update} from '../../services/user';
+import {Label} from '../../components/Label';
+
+import { update } from '../../services/user';
+import { Alert } from 'react-native';
 
 export default function EditarPerfil({navigation}) {
+  const {register} = useContext(AuthContext);
   const {user} = useContext(AuthContext);
 
   const [name, setName] = useState(user.name);
@@ -20,7 +25,7 @@ export default function EditarPerfil({navigation}) {
 
   return (
     <View>
-      <Label color="#589b9b" label="Informações pessoais" />
+      <Label label="Informações pessoais" />
 
       <TextInputField
         placeholder="Nome completo"
@@ -59,23 +64,38 @@ export default function EditarPerfil({navigation}) {
         onChange={(value) => setTelephone(value)}
       />
 
-      <Label color="#589b9b" label="Informações de perfil" />
+      <Label label="Informações de Perfil" />
 
       <TextInputField
         placeholder="Nome de Usuário"
         value={loginName}
         onChange={(value) => setLoginName(value)}
       />
+      <View style={{alignItems: 'center'}}>
 
-      <View style={{display: 'flex', alignItems: 'center', marginTop: 32, marginBottom: 24}}>
         <Button
+          title="Confirmar"
           titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
           buttonStyle={{width: 232, height: 50, backgroundColor: '#88c9bf'}}
-          onPress={() => update(user.uid, user)}
-          title="CONFIRMAR"
+          onPress={() => {
+            let newUser = {
+              address: address,
+              age: age,
+              city: city,
+              email: user.email,
+              loginName: loginName,
+              name: name,
+              photoFile: user.photoFile,
+              state: state,
+              telephone: telephone,
+              uid: user.uid,
+            };
+            update(user.uid, newUser).then((retorno) =>{
+              Alert('Usuário atualizado');
+              console.log(retorno);
+          })}}
         />
       </View>
-
     </View>
   );
 }

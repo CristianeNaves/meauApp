@@ -165,6 +165,8 @@ export default function Pet({route, navigation}) {
             buttonStyle={{width: 148, height: 50, backgroundColor: '#88c9bf'}}
             onPress={() => {
               remove(pet.id).then(() => {
+                const image = storage().ref().child(pet.photoFile);
+                image.delete().then(() => {console.log("Foto de pet removida")}).catch((error) => {console.log("Erro: " + error)});
                 navigation.navigate('Remover pet', {name: pet.petName});
               });
             }}

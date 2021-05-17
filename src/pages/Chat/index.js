@@ -53,7 +53,7 @@ export default function Chat({navigation, route}) {
       ms['senderFlag'] = (ms.sender === user.uid) ? true : false;
       // delete ms.sender;
     });
-    // console.log(msgs);
+    console.log(msgs);
     return msgs;
   };
 
@@ -80,6 +80,8 @@ export default function Chat({navigation, route}) {
     setChat(OCHAT);
     // console.log("chat: "+chat);
     setMessages(configMessages(OCHAT.messages));
+    // atualizaChat();
+    setTimeout(atualizaChat, 1000);
     // getChat(user.uid, destinatario.id).then((retorno) => {
     //   console.log('getChat() retorno: ', retorno);
     //   // const data = await retorno.docs[0]._data.messages;
@@ -94,8 +96,7 @@ export default function Chat({navigation, route}) {
     loadData();
   }, []);
 
-  let atualizandoChat = false;
-  const atualizacao = setInterval(() => {
+  const atualizaChat = () => {
     if(!atualizandoChat){
       atualizandoChat = true;
       getChat(OCHAT.users[0], OCHAT.users[1]).then((response) => {
@@ -104,10 +105,12 @@ export default function Chat({navigation, route}) {
         atualizandoChat = false;
       }); 
     }
+  }
 
-    // console.log("atualizei o chat");
-  }, 10000);
-  // clearInterval(atualizacao);
+  let atualizandoChat = false;
+  const atualizacao = setInterval(() => {
+    atualizaChat();
+  }, 3000);
 
   const sairDaPagina = navigation.addListener('blur', () => {
     clearInterval(atualizacao);
