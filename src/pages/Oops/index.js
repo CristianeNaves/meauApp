@@ -1,57 +1,49 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
-import {View, Text, ViewPropTypes} from 'react-native';
-import {LeftedContainer} from '../../styles/container';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import {LargeButton} from '../../components/Button';
-import {Label} from '../../components/Label';
-import { Button } from 'react-native-elements';
 
 export default function Oops({navigation}) {
+  const styles = StyleSheet.create({
+    h1: {
+      fontSize: 53,
+      fontFamily: 'Courgette-Regular',
+      color: '#88c9bf',
+      marginBottom: 52,
+      marginTop: 52,
+      textAlign: 'center',
+    },
+    text: {
+      color: '#757575',
+      fontSize: 14,
+      textAlign: 'center',
+      fontFamily: 'Roboto-Regular',
+      marginBottom: 16,
+    },
+    margin: {marginBottom: 44},
+  });
   return (
     <View>
       <Text
-        style={{
-          fontSize: 53,
-          fontFamily: 'Courgette-Regular',
-          color: '#88c9bf',
-          marginBottom: 52,
-          marginTop: 52,
-          textAlign: 'center'
-        }}>
+        style={styles.h1}>
         Ops...
       </Text>
-      <Text style={{
-        color: '#757575', 
-        fontSize: 14, 
-        textAlign: 'center', 
-        fontFamily: 'Roboto Regular',
-        marginBottom: 16
-        }}>
+      <Text style={styles.text}>
         Você não pode realizar esta ação sem possuir um cadastro.
       </Text>
-      <View style={{display: 'flex', alignItems: 'center'}}>
-        <Button
-          title="FAZER CADASTRO"
+      <View style={styles.margin}>
+        <LargeButton
+          title="Fazer Cadastro"
           onPress={() => navigation.navigate('Cadastro')}
-          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#88c9bf', marginBottom: 44}}
+          color="#88c9bf"
         />
       </View>
-      <Text style={{
-        color: '#757575', 
-        fontSize: 14, 
-        textAlign: 'center', 
-        fontFamily: 'Roboto Regular',
-        marginBottom: 16
-        }}>
-        Já possui um cadastro?
-      </Text>
-      <View style={{display: 'flex', alignItems: 'center'}}>
-        <Button
-          title="FAZER LOGIN"
+      <Text style={styles.text}>Já possui um cadastro?</Text>
+      <View style={styles.margin}>
+        <LargeButton
+          title="Fazer Login"
           onPress={() => navigation.navigate('Login')}
-          titleStyle={{color: '#434343', fontFamily: 'Roboto Regular'}}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#88c9bf', marginBottom: 44}}
+          color="#88c9bf"
         />
       </View>
     </View>
