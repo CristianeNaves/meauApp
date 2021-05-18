@@ -12,7 +12,7 @@ export default function Inicial( {navigation} ) {
       color: '#ffd358',
       textAlign: 'center',
       marginBottom: 52,
-      marginTop: 54,
+      marginTop: 0,
       fontFamily: 'Courgette-Regular',
     },
     text: {

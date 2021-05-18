@@ -68,28 +68,27 @@ export default function EditarPerfil({navigation}) {
         value={loginName}
         onChangeText={(value) => setLoginName(value)}
       />
-
       <LargeButton
         title="Confirmar"
         color="#88c9bf"
         onPress={() => {
-          const newUser = {
-                    address: address,
-                    age: age,
-                    city: city,
-                    email: user.email,
-                    loginName: loginName,
-                    name: name,
-                    photoFile: user.photoFile,
-                    state: state,
-                    telephone: telephone,
-                    uid: user.uid,
-                  };
+          let newUser = {
+            address: address,
+            age: age,
+            city: city,
+            email: user.email,
+            loginName: loginName,
+            name: name,
+            photoFile: user.photoFile,
+            state: state,
+            telephone: telephone,
+            uid: user.uid,
+          };
           update(user.uid, newUser).then((retorno) =>{
             Alert.alert('Usuário atualizado');
             console.log(retorno);
-        });
-      }}
+          });
+        }}
       />
     </View>
   );
