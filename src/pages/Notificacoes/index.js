@@ -74,7 +74,7 @@ const Notificacao = ({
       <Button
         icon={<Icon name="close" size={10} color="white" />}
         onPress={() => {
-          Alert.alert('Apagar a notificação', 'Deseja apagar a notificação', [
+          Alert.alert('Apagar a notificação', 'Deseja apagar a notificação?', [
             {
               text: 'Cancelar',
               style: 'cancel',

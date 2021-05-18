@@ -115,7 +115,7 @@ export default function Chat({navigation, route}) {
     update(chat.id, chat);
 
     //enviar notificação
-    chatNotification(destinatario.id, user.uid);
+    chatNotification(destinatario, user.uid);
   };
 
   return (
