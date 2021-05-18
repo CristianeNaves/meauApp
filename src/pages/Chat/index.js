@@ -13,27 +13,15 @@ import SimpleChat from "react-native-simple-chat";
 
 import {chatNotification} from '../../services/notifications';
 
-const arr = [
-  {
-    senderFlag: true,
-    text: 'Carregando',
-  },
-  {
-    senderFlag: false,
-    text: 'chat...',
-  },
-];
-
 export default function Chat({navigation, route}) {
   const {user} = useContext(AuthContext);
   const OCHAT = route.params ? route.params : {};
-  const destinatario = OCHAT ? ((OCHAT.users[0] == user.uid)?OCHAT.users[1]:OCHAT.users[0]) : {};
+  const destinatario = OCHAT ? ((OCHAT.users[0] === user.uid) ? OCHAT.users[1] : OCHAT.users[0]) : {};
 
   let mensagensTam = 0;
 
   const [chat, setChat] = useState();
   const [chatID, setChatID] = useState();
-  
   const [messages, setMessages] = React.useState();
   const [chatPhoto, setChatPhoto] = useState({
     uri:
@@ -53,7 +41,6 @@ export default function Chat({navigation, route}) {
       ms['senderFlag'] = (ms.sender === user.uid) ? true : false;
       // delete ms.sender;
     });
-    console.log(msgs);
     return msgs;
   };
 
