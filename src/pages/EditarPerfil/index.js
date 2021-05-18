@@ -91,7 +91,7 @@ export default function EditarPerfil({navigation}) {
               uid: user.uid,
             };
             update(user.uid, newUser).then((retorno) =>{
-              Alert('Usuário atualizado');
+              Alert.alert('Usuário atualizado');
               console.log(retorno);
           })}}
         />

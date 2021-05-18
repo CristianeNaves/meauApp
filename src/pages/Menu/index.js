@@ -52,7 +52,7 @@ export default function Menu( {navigation} ) {
         <LargeButton
           title="Notificações"
           color="#88c9bf"
-          onPress={() => navigation.navigate('Notificacoes')}
+          onPress={() => navigation.navigate('Notificações')}
         />
       </View>
 

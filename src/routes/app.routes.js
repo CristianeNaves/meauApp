@@ -172,7 +172,7 @@ export default function AppRoutes() {
       <AppStack.Screen name="Adotar" component={AdotarScreen} options={{headerStyle: {backgroundColor: '#fee29b'}, headerTitleStyle: {color: '#434343'}}} />
       <AppStack.Screen name="Remover pet" component={RemoverPetScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
       <AppStack.Screen name="Adotar pet" component={AdotarPetScreen} options={{headerStyle: {backgroundColor: '#fee29b'}, headerTitleStyle: {color: '#434343'}}} />
-      <AppStack.Screen name="Notificacoes" component={NotificacoesScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
+      <AppStack.Screen name="Notificações" component={NotificacoesScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
       <AppStack.Screen name="Chat" component={ChatScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}} />
       <AppStack.Screen name="Chats" component={ChatsScreen} options={{headerStyle: {backgroundColor: '#cfe9e5'}, headerTitleStyle: {color: '#434343'}}}/>
     </AppStack.Navigator>
