@@ -1,26 +1,78 @@
 /* eslint-disable prettier/prettier */
 import React, {useContext} from 'react';
-import {View} from 'react-native';
-import {LargeButton} from '../../components/Button';
+import {View, StyleSheet} from 'react-native';
 import AuthContext from '../../contexts/auth';
+import {Button} from 'react-native-elements';
+import {LargeButton} from '../../components/Button';
 
 export default function Menu( {navigation} ) {
-  const { signed } = useContext(AuthContext);
   const { logOut } = useContext(AuthContext);
+  const styles = StyleSheet.create({
+    margin: {marginTop: 20},
+    buttonClear: {marginTop: 44, marginBottom: 68},
+    buttonTitle: {color: '#88c9bf', fontSize: 16, fontFamily: 'Roboto-Regular'},
+  });
 
 
   return (
     <View>
-      <LargeButton title="Meu Perfil" onPress={() => navigation.navigate('Perfil')} />
-      <LargeButton title="Meus Animais" onPress={() => navigation.navigate('MeusPets')} />
+      <View style={styles.margin}>
+        <LargeButton
+          title="Meu Perfil"
+          onPress={() => navigation.navigate('Perfil')}
+          color="#88c9bf"
+        />
+      </View>
 
-      <LargeButton title="Cadastrar Animal" onPress={() => navigation.navigate('CadastroPet')} />
-      <LargeButton title="Adotar" onPress={() => navigation.navigate('Adotar')} />
+      <View style={styles.margin}>
+        <LargeButton
+          title="Meus Pets"
+          color="#88c9bf"
+          onPress={() => navigation.navigate('MeusPets')}
+        />
+      </View>
 
-      <LargeButton title="Notificações" onPress={() => navigation.navigate('Notificacoes')}/>
-      <LargeButton title="Chats" onPress={() => navigation.navigate('Chats')}/>
+      <View style={styles.margin}>
+        <LargeButton
+          title="Cadastrar Pet"
+          color="#88c9bf"
+          onPress={() => navigation.navigate('CadastroPet')}
+        />
+      </View>
 
-      <LargeButton title="Logout" onPress={() => logOut()} />
+      <View style={styles.margin}>
+        <LargeButton
+          title="Adotar"
+          color="#88c9bf"
+          onPress={() => navigation.navigate('Adotar')}
+        />
+      </View>
+
+      <View style={styles.margin}>
+        <LargeButton
+          title="Notificações"
+          color="#88c9bf"
+          onPress={() => navigation.navigate('Notificações')}
+        />
+      </View>
+
+      <View style={styles.margin}>
+        <LargeButton
+          title="Chats"
+          color="#88c9bf"
+          onPress={() => navigation.navigate('Chats')}
+        />
+      </View>
+
+      <View style={styles.buttonClear}>
+        <Button
+          title="logout"
+          type="clear"
+          titleStyle={styles.buttonTitle}
+          onPress={() => logOut()}
+        />
+      </View>
+
     </View>
   );
 }

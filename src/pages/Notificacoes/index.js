@@ -74,28 +74,22 @@ const Notificacao = ({
       <Button
         icon={<Icon name="close" size={10} color="white" />}
         onPress={() => {
-          Alert.alert(
-            'Apagar a notificação',
-            `Deseja apagar a notificação de ${sender.name}`,
-            [
-              {
-                text: 'Cancelar',
-                style: 'cancel',
+          Alert.alert('Apagar a notificação', 'Deseja apagar a notificação', [
+            {
+              text: 'Cancelar',
+              style: 'cancel',
+            },
+            {
+              text: 'Ok',
+              onPress: () => {
+                remove(notification.id).then(() => {
+                  setNotifications(
+                    notifications.filter((noti) => noti.id !== notification.id),
+                  );
+                });
               },
-              {
-                text: 'Ok',
-                onPress: () => {
-                  remove(notification.id).then(() => {
-                    setNotifications(
-                      notifications.filter(
-                        (noti) => noti.id !== notification.id,
-                      ),
-                    );
-                  });
-                },
-              },
-            ],
-          );
+            },
+          ]);
         }}
       />
     </ListItem>

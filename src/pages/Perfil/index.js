@@ -1,66 +1,105 @@
+/* eslint-disable prettier/prettier */
 import React, {useState, useContext} from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import AuthContext from '../../contexts/auth';
 
-import {Text, Image} from 'react-native-elements';
-import {TextInputField} from '../../components/Field';
-import {LargeButton} from '../../components/Button';
+import {Text} from 'react-native-elements';
 import {LargeImage} from '../../components/Image';
 import {Label} from '../../components/Label';
-
-import { get } from '../../services/user';
-
+import {LargeButton} from '../../components/Button';
 import storage from '@react-native-firebase/storage';
 
-import styles from './style';
-
 export default function Perfil({navigation}) {
-  const {register} = useContext(AuthContext);
   const {user} = useContext(AuthContext);
-  const [usrPhoto, setUsrPhoto] = useState({uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU"});
+  const [usrPhoto, setUsrPhoto] = useState({uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU'});
+  const styles = StyleSheet.create({
+    button: {marginTop: 32, marginBottom: 24},
+    title: {alignItems: 'center', marginTop: 36, marginBottom: 8},
+    image: {alignItems: 'center'},
+    textStyle: {color: '#757575', fontSize: 14, textAlign: 'center', fontFamily: 'Roboto-Regular'},
+  });
 
   try {
     const image = storage().ref().child(user.photoFile);
-    // const image = images.child('image1');
-    image.getDownloadURL().then((url) => { 
-      setUsrPhoto({ uri: url })
-      // console.log(usrPhoto);
+    image.getDownloadURL().then((url) => {
+      setUsrPhoto({ uri: url });
     })
     .catch(error => {
-      console.log("Não foi possível resgatar foto de usuário.");
+      console.log('Não foi possível resgatar foto de usuário.');
     });
   } catch (error) {
-    console.log("Não foi possível resgatar foto de usuário.");
+    console.log('Não foi possível resgatar foto de usuário.');
   }
 
   return (
     <View>
-      <Label label="Informações pessoais" />
-        <LargeImage source={ usrPhoto.uri } />
-      <Label label="Nome completo" />
-        <Text> {user.name} </Text>
-      <Label label="Idade" />
-        <Text> {user.age} </Text>
-      <Label label="Email" />
-        <Text> {user.email} </Text>
-      <Label label="Localização" />
-        <Text> {user.city} - {user.state} </Text>
-      <Label label="Endereço" />
-        <Text> {user.address} </Text>
-      <Label label="Telefone" />
-        <Text> {user.telephone} </Text>
-      <Label label="Informações de Perfil" />
+      <View style={styles.image}>
+        <LargeImage source={usrPhoto.uri} />
+      </View>
 
-      <Label label="Nome de Usuário" />
-        <Text> {user.loginName} </Text>
-      <Label label="Histórico" />
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Nome Completo" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.name}{' '}
+      </Text>
 
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Idade" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.age}{' '}
+      </Text>
 
-      <LargeButton
-        title="Editar Perfil"
-        onPress={() => navigation.navigate('EditarPerfil')}
-      />
-      
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Email" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.email}{' '}
+      </Text>
+
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Localização" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.city} - {user.state}{' '}
+      </Text>
+
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Endereço" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.address}{' '}
+      </Text>
+
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Telefone" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.telephone}{' '}
+      </Text>
+
+      <View style={styles.title}>
+        <Label color="#589b9b" label="Nome de Usuário" />
+      </View>
+      <Text style={styles.textStyle}>
+        {' '}
+        {user.loginName}{' '}
+      </Text>
+
+      <View style={styles.button}>
+        <LargeButton
+          title="Editar Perfil"
+          onPress={() => navigation.navigate('EditarPerfil')}
+          color="#88c9bf"
+        />
+      </View>
     </View>
   );
 }

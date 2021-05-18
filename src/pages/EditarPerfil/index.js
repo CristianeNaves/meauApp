@@ -1,15 +1,15 @@
+/* eslint-disable prettier/prettier */
 import React, {useState, useContext} from 'react';
 import {View} from 'react-native';
 import AuthContext from '../../contexts/auth';
-import {TextInputField} from '../../components/Field';
 import {LargeButton} from '../../components/Button';
+import {Input} from 'react-native-elements';
 import {Label} from '../../components/Label';
 
 import { update } from '../../services/user';
 import { Alert } from 'react-native';
 
 export default function EditarPerfil({navigation}) {
-  const {register} = useContext(AuthContext);
   const {user} = useContext(AuthContext);
 
   const [name, setName] = useState(user.name);
@@ -23,74 +23,73 @@ export default function EditarPerfil({navigation}) {
 
   return (
     <View>
-      <Label label="Informações pessoais" />
+      <Label label="Informações pessoais" color="#88c9bf" />
 
-      <TextInputField
-        placeholder="Nome completo"
+      <Input
+        placeholder="Nome Completo"
         value={name}
-        // label="Informações pessoais"
-        onChange={(value) => setName(value)}
+        onChangeText={(value) => setName(value)}
       />
 
-      <TextInputField 
+      <Input
         placeholder="Idade"
         value={age}
-        onChange={(value) => setAge(value)} 
+        onChangeText={(value) => setAge(value)}
       />
 
-      <TextInputField
+      <Input
         placeholder="Estado"
         value={state}
-        onChange={(value) => setState(value)}
+        onChangeText={(value) => setState(value)}
       />
 
-      <TextInputField
+      <Input
         placeholder="Cidade"
         value={city}
-        onChange={(value) => setCity(value)}
+        onChangeText={(value) => setCity(value)}
       />
 
-      <TextInputField
+      <Input
         placeholder="Endereço"
         value={address}
-        onChange={(value) => setAddress(value)}
+        onChangeText={(value) => setAddress(value)}
       />
 
-      <TextInputField
+      <Input
         placeholder="Telefone"
         value={telephone}
-        onChange={(value) => setTelephone(value)}
+        onChangeText={(value) => setTelephone(value)}
       />
 
-      <Label label="Informações de Perfil" />
+      <Label label="Informações de Perfil" color="#88c9bf" />
 
-      <TextInputField
+      <Input
         placeholder="Nome de Usuário"
         value={loginName}
-        onChange={(value) => setLoginName(value)}
+        onChangeText={(value) => setLoginName(value)}
       />
-
       <LargeButton
         title="Confirmar"
+        color="#88c9bf"
         onPress={() => {
-          const newUser = {
-                    address: address, 
-                    age: age,
-                    city: city,
-                    email: user.email,
-                    loginName: loginName,
-                    name: name,
-                    photoFile: user.photoFile,
-                    state: state,
-                    telephone: telephone,
-                    uid: user.uid
-                  };
+          let newUser = {
+            address: address,
+            age: age,
+            city: city,
+            email: user.email,
+            loginName: loginName,
+            name: name,
+            photoFile: user.photoFile,
+            state: state,
+            telephone: telephone,
+            uid: user.uid,
+          };
           update(user.uid, newUser).then((retorno) =>{
-            Alert.alert("Usuário atualizado");
+            Alert.alert('Usuário atualizado');
             console.log(retorno);
-        })}}
+          });
+        }}
       />
-      
     </View>
   );
 }

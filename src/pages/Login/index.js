@@ -1,9 +1,9 @@
 import React, {useContext, useState} from 'react';
-import {View} from 'react-native';
-import {LargeButton} from '../../components/Button';
-import styles from '../../components/Button/styles';
-import {TextInputField} from '../../components/Field';
+import {View, StyleSheet} from 'react-native';
 import AuthContext from '../../contexts/auth';
+import {Input} from 'react-native-elements';
+import {LargeButton} from '../../components/Button';
+import styles from '../../components/Image/styles';
 
 export default function Login({navigation}) {
   const [user, setUser] = useState({});
@@ -11,21 +11,24 @@ export default function Login({navigation}) {
 
   return (
     <View>
-      <TextInputField
-        placeholder="Email de usuário"
-        onChange={(email) => setUser({...user, email})}
+      <View style={{marginTop: 64}} />
+      <Input
+        placeholder="E-mail do usuário"
+        onChangeText={(email) => setUser({...user, email})}
       />
-      <TextInputField
-        placeholder="Senha"
-        onChange={(password) => setUser({...user, password})}
+      <Input
+        placeholder="Password"
+        secureTextEntry={true}
+        onChangeText={(password) => setUser({...user, password})}
       />
-      <LargeButton
-        title="Entrar"
-        style={styles.blueButton}
-        onPress={() => logIn(user.email, user.password)}
-      />
-      <LargeButton title="Entrar com facebook" style={styles.facebookButton} />
-      <LargeButton title="Entrar com google" style={styles.gmailButton} />
+
+      <View style={{marginTop: 52}}>
+        <LargeButton
+          title="Entrar"
+          onPress={() => logIn(user.email, user.password)}
+          color="#88c9bf"
+        />
+      </View>
     </View>
   );
 }

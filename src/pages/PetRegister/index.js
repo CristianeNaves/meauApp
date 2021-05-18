@@ -1,38 +1,58 @@
 import React, {useContext, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {
   CheckBoxField,
   RadioButtonField,
   TextInputField,
 } from '../../components/Field';
-import {LargeButton} from '../../components/Button';
 import AuthContext from '../../contexts/auth';
 import {create} from '../../services/pet';
 
 import ImageSelection from '../../components/ImageSelection';
 import storage from '@react-native-firebase/storage';
+import {Button} from 'react-native-elements';
+import {LargeButton} from '../../components/Button';
 
 const PetCreated = ({navigation}) => {
+  const styles = StyleSheet.create({
+    h1: {
+      textAlign: 'center',
+      fontSize: 53,
+      color: '#ffd358',
+      marginBottom: 52,
+      marginTop: 52,
+    },
+    text: {
+      textAlign: 'center',
+      fontSize: 16,
+      color: '#757575',
+    },
+    button: {
+      marginTop: 32,
+      marginBottom: 24,
+    },
+  });
+
   return (
     <View>
-      <Text>Eba!</Text>
-      <Text>O cadastro do seu pet foi realizado com sucesso!</Text>
-      <Text>
-        Certifique-se que permitiu o envio de notificações por push no campo
-        privacidade do menu configurações do aplicativo. Assim, poderemos te
-        assim que alguém interessado entrar em contato!
+      <Text style={styles.h1}>Eba!</Text>
+      <Text style={styles.text}>
+        O cadastro do seu pet foi realizado com sucesso!
       </Text>
-      <LargeButton
-        title="Meus Pets"
-        onPress={() => navigation.navigate('MeusPets')}
-      />
+
+      <View style={styles.button}>
+        <LargeButton
+          onPress={() => navigation.navigate('MeusPets')}
+          title="confirmar"
+          color="#ffd358"
+        />
+      </View>
     </View>
   );
 };
 
 const PetForm = ({user, setCreated}) => {
-  /** buscar as informaçoes caso esteja fazendo update. Fazer um models para organizar */
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,
     tímido: false,
@@ -72,20 +92,28 @@ const PetForm = ({user, setCreated}) => {
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
 
+  const styles = StyleSheet.create({
+    margin: {marginBottom: 24},
+    text: {
+      fontSize: 12,
+      color: '#f7a800',
+      textTransform: 'uppercase',
+      marginBottom: 16,
+    },
+  });
+
   const uploadImage = async () => {
     console.log(petPhoto);
-    const { uri } = petPhoto;
+    const {uri} = petPhoto;
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     setUploading(true);
     setTransferred(0);
-    const task = storage()
-      .ref(filename)
-      .putFile(uploadUri);
+    const task = storage().ref(filename).putFile(uploadUri);
     // set progress state
-    task.on('state_changed', snapshot => {
+    task.on('state_changed', (snapshot) => {
       setTransferred(
-        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
       );
     });
     try {
@@ -94,11 +122,6 @@ const PetForm = ({user, setCreated}) => {
       console.error(e);
     }
     setUploading(false);
-    // Alert.alert(
-    //   'Photo uploaded!',
-    //   'Your photo has been uploaded to Firebase Cloud Storage!'
-    // );
-    // setImage(null);
   };
 
   function createPet() {
@@ -133,36 +156,48 @@ const PetForm = ({user, setCreated}) => {
         label="Nome do animal"
         onChange={(value) => setPetName(value)}
       />
+      <Text style={styles.text}>Foto do Animal</Text>
+      <ImageSelection image={petPhoto} onImagePicked={setPetPhoto} />
       <RadioButtonField
         selected={especie}
         setSelected={setEspecie}
         options={['Gato', 'Cachorro']}
+        width={90}
         title="Espécie"
       />
       <RadioButtonField
         selected={sexo}
         setSelected={setSexo}
         options={['Macho', 'Fêmea']}
+        width={90}
         title="Sexo"
       />
       <RadioButtonField
         selected={porte}
         setSelected={setPorte}
         options={['Pequeno', 'Médio', 'Grande']}
+        width={90}
         title="Porte"
       />
       <RadioButtonField
         selected={idade}
         setSelected={setIdade}
         options={['Filhote', 'Adulto', 'Idoso']}
+        width={90}
         title="Idade"
       />
       <CheckBoxField
         options={temperamentos}
+        width={82}
         setOptions={setTemperamentos}
         title="Temperamento"
       />
-      <CheckBoxField options={saude} setOptions={setSaude} title="Saúde" />
+      <CheckBoxField
+        options={saude}
+        setOptions={setSaude}
+        width={90}
+        title="Saúde"
+      />
       <TextInputField
         placeholder="Doenças do animal"
         onChange={(value) => setDoencas(value)}
@@ -186,10 +221,13 @@ const PetForm = ({user, setCreated}) => {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
-
-      <ImageSelection image={petPhoto} onImagePicked={setPetPhoto}/>
-
-      <LargeButton title="Colocar para adoção" onPress={() => createPet()} />
+      <View style={styles.margin}>
+        <LargeButton
+          color="#ffd358"
+          title="colocar para adoção"
+          onPress={() => createPet()}
+        />
+      </View>
     </View>
   );
 };

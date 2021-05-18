@@ -1,11 +1,17 @@
 import React from 'react';
-import {Button, View, TouchableOpacity, Text} from 'react-native';
+import {View} from 'react-native';
+import {Button} from 'react-native-elements';
 import styles from './styles';
 
-const LargeButton = ({title, onPress, style}) => {
+const LargeButton = ({title, onPress, color}) => {
   return (
-    <View>
-      <Button title={title} style={styles.largeButton} onPress={onPress} />
+    <View style={styles.button}>
+      <Button
+        titleStyle={styles.buttonText}
+        buttonStyle={[styles.largeButton, {backgroundColor: color}]}
+        title={title}
+        onPress={onPress}
+      />
     </View>
   );
 };
@@ -13,7 +19,7 @@ const LargeButton = ({title, onPress, style}) => {
 const SmallButton = ({title, onPress, type}) => {
   return (
     <View>
-      <Button title={title} style={styles.smallButton} onPress={onPress}/>
+      <Button title={title} style={styles.smallButton} onPress={onPress} />
     </View>
   );
 };

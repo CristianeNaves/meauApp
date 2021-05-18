@@ -13,27 +13,23 @@ import { Alert } from 'react-native';
 import {adoptionConfirmNotification, adoptionNegationNotification} from '../../services/notifications';
 
 const ChatItem = ({navigation, conversa}) => {
-  console.log('CHATS: conversa: ', conversa);
   const [chat, setChat] = useState(conversa);
   const {user} = useContext(AuthContext);
   const destinatarioID = (conversa.users[0] === user.uid) ? conversa.users[1] : conversa.users[0];
   const [destinatarioPhoto, setDestinatarioPhoto] = useState({uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzizgQQjWDQqcRkOdd6_VEOXmlrg5Rr0bxPg&usqp=CAU'});
   const [destinatario, setDestinatario] = useState();
 
-  const loadPhoto = async () => {
-    try {
-      const image = storage().ref().child(destinatario.photoFile);
-      // const image = images.child('image1');
-      image.getDownloadURL().then((url) => {
-        setDestinatarioPhoto({ uri: url });
-      })
-      .catch(error => {
-        console.log('Não foi possível resgatar foto do destinatario.');
-      });
-    } catch (error) {
+  try {
+    const image = storage().ref().child(destinatario.photoFile);
+    image.getDownloadURL().then((url) => {
+      setDestinatarioPhoto({ uri: url });
+    })
+    .catch(error => {
       console.log('Não foi possível resgatar foto do destinatario.');
-    }
-  };
+    });
+  } catch (error) {
+    console.log('Não foi possível resgatar foto do destinatario.');
+  }
   const loadData = async () => {
     const request = await get(destinatarioID);
     const data = await request._data;
@@ -42,9 +38,7 @@ const ChatItem = ({navigation, conversa}) => {
   };
 
   useEffect(() => {
-    loadData().then(() => {
-      loadPhoto();
-    });
+    loadData();
     /*
     let isCancelled = false;
     get(destinatarioID).then((response) => {
