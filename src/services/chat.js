@@ -29,7 +29,7 @@ const getAll = async (chatId) => {
 
 const newChat = (userA, userB) => {
   const novochat = {
-    messages: [{message: "Lembre-se de ser educado.", sender:"server"}],
+    messages: [],
     users: [userA, userB],
   };
 

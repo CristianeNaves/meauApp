@@ -83,21 +83,25 @@ export default function Chat({navigation, route}) {
     loadData();
   }, []);
 
-  const atualizaChat = () => {
+  let lastUpdate = new Date();
+  const atualizaChat = async () => {
     if(!atualizandoChat){
       atualizandoChat = true;
       getChat(OCHAT.users[0], OCHAT.users[1]).then((response) => {
         console.log(response);
         if(response.messages.length > mensagensTam) setMessages(configMessages(response.messages));
         atualizandoChat = false;
+        lastUpdate = new Date();
       }); 
     }
   }
 
   let atualizandoChat = false;
   const atualizacao = setInterval(() => {
-    atualizaChat();
-  }, 3000);
+    const agora = new Date();
+    if(agora - lastUpdate >= 5000) atualizaChat().then();
+    else console.log("pulei chat");
+  }, 5000);
 
   const sairDaPagina = navigation.addListener('blur', () => {
     clearInterval(atualizacao);
