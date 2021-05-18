@@ -38,6 +38,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
+  buttonView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 28,
+    marginTop: 28,
+  },
+  buttonStyle: {
+    width: 148,
+    height: 50,
+    backgroundColor: '#88c9bf',
+  },
+  buttonTitle: {
+    color: '#757575',
+    textTransform: 'uppercase',
+  },
 });
 
 export default styles;

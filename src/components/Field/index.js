@@ -43,7 +43,7 @@ const CheckBoxField = ({
       <View style={perspective}>
         {Object.keys(options).map((key) => {
           return (
-            <View style={styles.viewAlignedCenter}>
+            <View style={styles.viewAlignedCenter} key={key}>
               <CheckBox
                 disabled={false}
                 value={options[key]}
@@ -73,7 +73,7 @@ const RadioButtonField = ({selected, setSelected, options, title, width}) => {
         <View style={styles.viewWrap}>
           {options.map((op) => {
             return (
-              <View style={[styles.viewAlignedCenter, spacing]}>
+              <View style={[styles.viewAlignedCenter, spacing]} key={op}>
                 <RadioButton value={op} />
                 <Text>{op}</Text>
               </View>

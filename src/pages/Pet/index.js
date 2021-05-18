@@ -137,50 +137,45 @@ export default function Pet({route, navigation}) {
       </View>
 
       {user.uid === pet.userId ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginBottom: 28,
-            marginTop: 28,
-          }}>
+        <View style={styles.buttonView}>
+          <View style={{marginRight: 16}}>
+            <Button
+              title="Interessados"
+              titleStyle={styles.buttonTitle}
+              buttonStyle={styles.buttonStyle}
+              onPress={() => {
+                if (pet.intentios != null && pet.intentios.length > 0)
+                  navigation.navigate('Interessados', pet);
+                else Alert.alert('Não há interessados na adoção ainda.');
+              }}
+            />
+          </View>
           <Button
-            title="INTERESSADOS"
-            titleStyle={{color: '#757575'}}
-            buttonStyle={{
-              width: 148,
-              height: 50,
-              backgroundColor: '#88c9bf',
-              marginRight: 16,
-            }}
-            onPress={() => {
-              if (pet.intentios != null && pet.intentios.length > 0)
-                navigation.navigate('Interessados', pet);
-              else Alert.alert('Não há interessados na adoção ainda.');
-            }}
-          />
-          <Button
-            title="REMOVER PET"
-            titleStyle={{color: '#757575'}}
-            buttonStyle={{width: 148, height: 50, backgroundColor: '#88c9bf'}}
+            title="Remover Pet"
+            titleStyle={styles.buttonTitle}
+            buttonStyle={styles.buttonStyle}
             onPress={() => {
               remove(pet.id).then(() => {
                 const image = storage().ref().child(pet.photoFile);
-                image.delete().then(() => {console.log("Foto de pet removida")}).catch((error) => {console.log("Erro: " + error)});
+                image
+                  .delete()
+                  .then(() => {
+                    console.log('Foto de pet removida');
+                  })
+                  .catch((error) => {
+                    console.log('Erro: ' + error);
+                  });
                 navigation.navigate('Remover pet', {name: pet.petName});
               });
             }}
           />
         </View>
       ) : (
-        <View style={{alignItems: 'center', marginBottom: 28, marginTop: 28}}>
-          <Button
-            title="PRETENDO ADOTAR"
-            titleStyle={{color: '#434343'}}
-            buttonStyle={{width: 232, height: 50, backgroundColor: '#fdcf58'}}
-            onPress={() => {
-              sentAdoptionIntention(pet, user);
-            }}
+        <View style={{marginBottom: 28, marginTop: 28}}>
+          <LargeButton
+            title="Pretendo Adotar"
+            color="#fdcf58"
+            onPress={() => sentAdoptionIntention(pet, user)}
           />
         </View>
       )}

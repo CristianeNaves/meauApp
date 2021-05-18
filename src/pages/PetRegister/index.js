@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {LeftedContainer} from '../../styles/container';
 import {
   CheckBoxField,
@@ -12,33 +12,40 @@ import {create} from '../../services/pet';
 import ImageSelection from '../../components/ImageSelection';
 import storage from '@react-native-firebase/storage';
 import {Button} from 'react-native-elements';
+import {LargeButton} from '../../components/Button';
 
 const PetCreated = ({navigation}) => {
+  const styles = StyleSheet.create({
+    h1: {
+      textAlign: 'center',
+      fontSize: 53,
+      color: '#ffd358',
+      marginBottom: 52,
+      marginTop: 52,
+    },
+    text: {
+      textAlign: 'center',
+      fontSize: 16,
+      color: '#757575',
+    },
+    button: {
+      marginTop: 32,
+      marginBottom: 24,
+    },
+  });
+
   return (
     <View>
-      <Text style={{textAlign: 'center', fontSize: 53, color: '#ffd358',marginBottom: 52, marginTop: 52}}>
-        Eba!
-      </Text>
-      <Text style={{textAlign: 'center', fontSize: 16, color: '#757575'}}>
+      <Text style={styles.h1}>Eba!</Text>
+      <Text style={styles.text}>
         O cadastro do seu pet foi realizado com sucesso!
       </Text>
 
-      <View
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginTop: 32,
-          marginBottom: 24,
-        }}>
-        <Button
-          titleStyle={{
-            color: '#434343',
-            fontFamily: 'Roboto Regular',
-            textTransform: 'uppercase',
-          }}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+      <View style={styles.button}>
+        <LargeButton
           onPress={() => navigation.navigate('MeusPets')}
           title="confirmar"
+          color="#ffd358"
         />
       </View>
     </View>
@@ -46,7 +53,6 @@ const PetCreated = ({navigation}) => {
 };
 
 const PetForm = ({user, setCreated}) => {
-  /** buscar as informaçoes caso esteja fazendo update. Fazer um models para organizar */
   const [temperamentos, setTemperamentos] = useState({
     brincalhão: false,
     tímido: false,
@@ -86,20 +92,28 @@ const PetForm = ({user, setCreated}) => {
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
 
+  const styles = StyleSheet.create({
+    margin: {marginBottom: 24},
+    text: {
+      fontSize: 12,
+      color: '#f7a800',
+      textTransform: 'uppercase',
+      marginBottom: 16,
+    },
+  });
+
   const uploadImage = async () => {
     console.log(petPhoto);
-    const { uri } = petPhoto;
+    const {uri} = petPhoto;
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     setUploading(true);
     setTransferred(0);
-    const task = storage()
-      .ref(filename)
-      .putFile(uploadUri);
+    const task = storage().ref(filename).putFile(uploadUri);
     // set progress state
-    task.on('state_changed', snapshot => {
+    task.on('state_changed', (snapshot) => {
       setTransferred(
-        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000,
       );
     });
     try {
@@ -108,11 +122,6 @@ const PetForm = ({user, setCreated}) => {
       console.error(e);
     }
     setUploading(false);
-    // Alert.alert(
-    //   'Photo uploaded!',
-    //   'Your photo has been uploaded to Firebase Cloud Storage!'
-    // );
-    // setImage(null);
   };
 
   function createPet() {
@@ -147,15 +156,7 @@ const PetForm = ({user, setCreated}) => {
         label="Nome do animal"
         onChange={(value) => setPetName(value)}
       />
-      <Text
-        style={{
-          fontSize: 12,
-          color: '#f7a800',
-          textTransform: 'uppercase',
-          marginBottom: 16,
-        }}>
-        Foto do Animal
-      </Text>
+      <Text style={styles.text}>Foto do Animal</Text>
       <ImageSelection image={petPhoto} onImagePicked={setPetPhoto} />
       <RadioButtonField
         selected={especie}
@@ -220,14 +221,9 @@ const PetForm = ({user, setCreated}) => {
         label="Sobre o animal"
         placeholder="Compartilhe a história do animal"
       />
-      <View style={{alignItems: 'center', marginBottom: 24}}>
-        <Button
-          titleStyle={{
-            color: '#434343',
-            fontFamily: 'Roboto Regular',
-            textTransform: 'uppercase',
-          }}
-          buttonStyle={{width: 232, height: 50, backgroundColor: '#ffd358'}}
+      <View style={styles.margin}>
+        <LargeButton
+          color="#ffd358"
           title="colocar para adoção"
           onPress={() => createPet()}
         />
