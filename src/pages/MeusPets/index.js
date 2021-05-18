@@ -1,11 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import AuthContext from '../../contexts/auth';
 import {getAll} from '../../services/pet';
-import {ListItem} from 'react-native-elements';
-import {LargeImage} from '../../components/Image';
 import {Button, Card} from 'react-native-paper';
-import styles from './style';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
 
@@ -14,35 +11,45 @@ const PetCard = ({navigation, pet}) => {
     uri:
       'https://i.pinimg.com/originals/18/82/e0/1882e07aecdf7a3286a5013cdad5d0c0.png',
   });
+  const styles = StyleSheet.create({
+    cardTitle: {
+      backgroundColor: '#cfe9e5',
+    },
+    margin: {
+      marginBottom: 12,
+    },
+    bottomInfo: {
+      color: '#434343',
+      fontSize: 12,
+      fontFamily: 'Roboto-Regular',
+    },
+    titleInfo: {
+      color: '#434343',
+      fontSize: 16,
+      fontFamily: 'Roboto-Medium',
+      textTransform: 'uppercase',
+    },
+  });
 
-  const loadPhoto = async () => {
-    try {
-      const image = storage().ref().child(pet.photoFile);
-      // const image = images.child('image1');
-      image
-        .getDownloadURL()
-        .then((url) => {
-          setPetPhoto({uri: url});
-        })
-        .catch(() => {
-          console.log('Não foi possível resgatar foto do interessado.');
-        });
-    } catch (error) {
-      console.log('Não foi possível resgatar foto do interessado.');
-    }
-  };
-
-  useEffect(() => {
-    loadPhoto();
-  }, []);
+  try {
+    const image = storage().ref().child(pet.photoFile);
+    image
+      .getDownloadURL()
+      .then((url) => {
+        setPetPhoto({uri: url});
+      })
+      .catch(() => {
+        console.log('Não foi possível resgatar foto do interessado.');
+      });
+  } catch (error) {
+    console.log('Não foi possível resgatar foto do interessado.');
+  }
 
   return (
-    <Card
-      style={{marginBottom: 12}}
-      onPress={() => navigation.navigate('Pet', pet)}>
+    <Card style={styles.margin} onPress={() => navigation.navigate('Pet', pet)}>
       <Card.Title
         title={pet.petName}
-        style={{backgroundColor: '#cfe9e5'}}
+        style={[styles.cardTitle, styles.titleInfo]}
         titleStyle={styles.titleInfo}
       />
       <Card.Cover source={{uri: petPhoto.uri}} />
@@ -55,7 +62,6 @@ const PetCard = ({navigation, pet}) => {
         }}>
         Interessados
       </Button>
-      {/* <Button labelStyle={styles.bottomInfo}>Apadrinhamento | Ajuda</Button> */}
     </Card>
   );
 };
